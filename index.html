@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Plus Vet – Clínica veterinaria especializada en perros y gatos en Santa Rosa de Cabal, Risaralda. Medicina general, cirugía, hospitalización 24h y más.">
+  <title>Plus Vet – Clínica Veterinaria | Santa Rosa de Cabal</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES
+    ============================================================ */
+    :root {
+      --teal:       #22bcbd;
+      --teal-dark:  #1aa8a9;
+      --orange:     #ffa018;
+      --orange-dark:#e8901a;
+      --gray:       #7f7f7f;
+      --dark:       #191919;
+      --deep:       #042827;
+      --light:      #f4f4f4;
+      --white:      #ffffff;
+
+      --gradient:   linear-gradient(135deg, #22bcbd 0%, #042827 100%);
+      --gradient-h: linear-gradient(90deg,  #22bcbd 0%, #042827 100%);
+      --gradient-v: linear-gradient(180deg, #22bcbd 0%, #042827 100%);
+
+      --font: 'Poppins', sans-serif;
+
+      --shadow-sm:  0 2px 8px  rgba(0,0,0,.07);
+      --shadow-md:  0 8px 32px rgba(0,0,0,.11);
+      --shadow-lg:  0 24px 64px rgba(0,0,0,.15);
+      --shadow-teal:0 8px 28px rgba(34,188,189,.35);
+      --shadow-orange: 0 8px 28px rgba(255,160,24,.35);
+
+      --radius:     16px;
+      --radius-sm:  8px;
+      --radius-full:999px;
+      --ease:       cubic-bezier(.4,0,.2,1);
+      --transition: all .3s var(--ease);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a  { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: var(--font); cursor: pointer; }
+
+    /* ============================================================
+       UTILITIES
+    ============================================================ */
+    .container   { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section     { padding: 100px 0; }
+    .section-sm  { padding: 60px 0; }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .tag-pill {
+      background: rgba(34,188,189,.12);
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+    }
+    .tag-orange   { color: var(--orange); }
+    .tag-pill-orange { background: rgba(255,160,24,.12); }
+
+    .section-title {
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.5px;
+      margin: 12px 0 16px;
+    }
+    .section-subtitle {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--gray);
+      max-width: 580px;
+      line-height: 1.75;
+    }
+    .section-header { margin-bottom: 64px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: var(--white);
+    }
+    .btn-primary:hover {
+      background: var(--teal-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-teal);
+    }
+    .btn-orange {
+      background: var(--orange);
+      color: var(--white);
+    }
+    .btn-orange:hover {
+      background: var(--orange-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-orange);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,.5);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,.1);
+      border-color: white;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--teal);
+      border: 2px solid var(--teal);
+    }
+    .btn-outline:hover {
+      background: var(--teal);
+      color: white;
+    }
+    .btn-sm { padding: 10px 20px; font-size: 13px; }
+
+    /* Scroll animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .65s var(--ease), transform .65s var(--ease);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .08s; }
+    .d2 { transition-delay: .16s; }
+    .d3 { transition-delay: .24s; }
+    .d4 { transition-delay: .32s; }
+    .d5 { transition-delay: .40s; }
+    .d6 { transition-delay: .48s; }
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    .header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0,0,0,.05);
+      transition: box-shadow .3s var(--ease);
+    }
+    .header.scrolled { box-shadow: var(--shadow-md); }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+    }
+    .nav-logo img { height: 44px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-links a {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--dark);
+      position: relative;
+      transition: color .25s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--teal);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s var(--ease);
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      inset: 80px 0 auto 0;
+      background: white;
+      padding: 16px 24px 24px;
+      box-shadow: var(--shadow-lg);
+      z-index: 999;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 15px;
+      font-weight: 500;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--light);
+      color: var(--dark);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu .btn { margin-top: 12px; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      min-height: 100vh;
+      padding-top: 80px;
+      background: var(--gradient);
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Dot grid */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.09) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    /* Decorative blobs */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .blob-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,255,255,.07) 0%, transparent 70%);
+      top: -250px; right: -150px;
+    }
+    .blob-2 {
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(255,160,24,.18) 0%, transparent 70%);
+      bottom: -80px; left: -60px;
+    }
+    .blob-3 {
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(255,255,255,.1) 0%, transparent 70%);
+      top: 120px; right: 42%;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+      padding: 80px 0;
+    }
+
+    /* Hero text */
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--radius-full);
+      padding: 6px 16px 6px 10px;
+      color: rgba(255,255,255,.9);
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    .hero-tag i { color: var(--orange); }
+
+    .hero-title {
+      font-size: clamp(38px, 4.5vw, 66px);
+      font-weight: 900;
+      color: white;
+      line-height: 1.0;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+    .hero-title .accent { color: var(--orange); }
+
+    .hero-subtitle {
+      font-size: 17px;
+      font-weight: 300;
+      color: rgba(255,255,255,.75);
+      line-height: 1.75;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 52px;
+      padding-top: 36px;
+      border-top: 1px solid rgba(255,255,255,.15);
+    }
+    .hero-stat-num {
+      font-size: 32px;
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+    }
+    .hero-stat-lbl {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,.55);
+      margin-top: 4px;
+    }
+
+    /* Hero visual */
+    .hero-visual { position: relative; }
+
+    .hero-card {
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 28px;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 4/5;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-card-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      color: rgba(255,255,255,.35);
+      text-align: center;
+      padding: 40px;
+    }
+    .hero-card-placeholder i { font-size: 72px; }
+    .hero-card-placeholder p { font-size: 13px; line-height: 1.5; }
+    .hero-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Floating badges */
+    .hero-badge {
+      position: absolute;
+      background: white;
+      border-radius: 18px;
+      padding: 12px 18px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: float 4s ease-in-out infinite;
+    }
+    .hero-badge-left  { bottom: 48px; left: -24px; animation-delay: 0s; }
+    .hero-badge-right { top: 64px;  right: -24px; animation-delay: 1.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .badge-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .badge-icon.t { background: var(--teal); color: white; }
+    .badge-icon.o { background: var(--orange); color: white; }
+    .badge-main { font-size: 13.5px; font-weight: 700; color: var(--dark); }
+    .badge-sub  { font-size: 11px;   color: var(--gray); margin-top: 1px; }
+
+    /* ============================================================
+       SERVICES
+    ============================================================ */
+    .services { background: var(--white); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 20px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border: 1.5px solid rgba(0,0,0,.06);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: var(--gradient-h);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s var(--ease);
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
+    }
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .svc-icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 18px;
+      background: rgba(34,188,189,.1);
+      color: var(--teal);
+    }
+    .svc-icon.o { background: rgba(255,160,24,.1); color: var(--orange); }
+
+    .svc-name { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .svc-desc { font-size: 13.5px; font-weight: 300; color: var(--gray); line-height: 1.7; }
+
+    /* ============================================================
+       WHY US
+    ============================================================ */
+    .why { background: var(--dark); overflow: hidden; position: relative; }
+    .why::before {
+      content: '';
+      position: absolute;
+      top: -300px; right: -300px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(34,188,189,.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .why .section-title  { color: white; }
+    .why .section-subtitle { color: rgba(255,255,255,.55); }
+
+    .why-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .why-feat {
+      padding: 22px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: var(--radius);
+      transition: var(--transition);
+    }
+    .why-feat:hover {
+      background: rgba(34,188,189,.1);
+      border-color: rgba(34,188,189,.25);
+    }
+    .why-feat-icon  { font-size: 26px; margin-bottom: 12px; }
+    .why-feat-title { font-size: 14px; font-weight: 700; color: white; margin-bottom: 5px; }
+    .why-feat-text  { font-size: 12.5px; color: rgba(255,255,255,.45); line-height: 1.6; }
+
+    /* Right column */
+    .why-right { display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
+
+    .why-main {
+      background: var(--gradient);
+      border-radius: var(--radius);
+      padding: 44px;
+      text-align: center;
+      color: white;
+    }
+    .why-main-emoji { font-size: 64px; margin-bottom: 16px; }
+    .why-main-title { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+    .why-main-text  { font-size: 14px; opacity: .7; line-height: 1.7; }
+
+    .why-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .why-stat {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      text-align: center;
+    }
+    .why-stat-num   { font-size: 30px; font-weight: 800; color: var(--teal); line-height: 1; }
+    .why-stat-label { font-size: 11.5px; color: rgba(255,255,255,.45); margin-top: 4px; }
+
+    /* ============================================================
+       TEAM
+    ============================================================ */
+    .team { background: var(--light); }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .team-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .team-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .team-photo {
+      height: 260px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .team-photo i { font-size: 96px; color: rgba(255,255,255,.18); }
+    .team-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute; inset: 0;
+    }
+    .team-photo-hint {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 12px;
+      background: linear-gradient(transparent, rgba(0,0,0,.5));
+      font-size: 11px;
+      color: rgba(255,255,255,.6);
+      text-align: center;
+    }
+
+    .team-body { padding: 28px; }
+    .team-name { font-size: 19px; font-weight: 700; }
+    .team-role { font-size: 13px; font-weight: 600; color: var(--teal); margin: 4px 0 12px; }
+    .team-bio  { font-size: 13.5px; color: var(--gray); line-height: 1.7; }
+
+    /* Network card spans full width */
+    .network-card {
+      grid-column: 1 / -1;
+      background: var(--gradient);
+      border-radius: var(--radius);
+      padding: 48px 52px;
+      color: white;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 48px;
+    }
+    .net-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+    .net-text  { font-size: 14.5px; opacity: .8; line-height: 1.75; }
+    .net-tags  { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .net-tag {
+      background: rgba(255,255,255,.15);
+      color: white;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       TECHNOLOGY
+    ============================================================ */
+    .technology { background: var(--white); }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .tech-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .tech-card:hover {
+      background: var(--dark);
+    }
+    .tech-card:hover .tech-icon { background: rgba(34,188,189,.18); color: var(--teal); }
+    .tech-card:hover .tech-name { color: white; }
+    .tech-card:hover .tech-desc { color: rgba(255,255,255,.45); }
+
+    .tech-icon {
+      width: 72px; height: 72px;
+      border-radius: 18px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: var(--teal);
+      margin: 0 auto 18px;
+      transition: var(--transition);
+    }
+    .tech-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; transition: var(--transition); }
+    .tech-desc { font-size: 13px; color: var(--gray); line-height: 1.7; transition: var(--transition); }
+
+    /* Quirófano highlight */
+    .quirofano {
+      margin-top: 56px;
+      background: var(--gradient);
+      border-radius: 24px;
+      padding: 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .quirofano-title { font-size: clamp(24px, 2.5vw, 34px); font-weight: 800; color: white; margin-bottom: 18px; }
+    .quirofano-text  { font-size: 15.5px; color: rgba(255,255,255,.75); line-height: 1.8; margin-bottom: 28px; }
+    .quirofano-list  { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .quirofano-item  {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: rgba(255,255,255,.8);
+    }
+    .quirofano-item i { color: var(--orange); font-size: 14px; }
+    .quirofano-visual {
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.2);
+      font-size: 88px;
+    }
+
+    /* ============================================================
+       TESTIMONIALS
+    ============================================================ */
+    .testimonials { background: var(--light); }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .testi-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 36px 30px;
+      transition: var(--transition);
+    }
+    .testi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .testi-stars  { color: var(--orange); font-size: 13px; margin-bottom: 6px; letter-spacing: 2px; }
+    .testi-quote  {
+      font-size: 48px;
+      line-height: .8;
+      color: var(--teal);
+      font-family: Georgia, serif;
+      margin-bottom: 12px;
+    }
+    .testi-text   { font-size: 14.5px; font-weight: 300; color: var(--dark); line-height: 1.75; margin-bottom: 24px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .testi-name { font-size: 13.5px; font-weight: 700; }
+    .testi-meta { font-size: 12px; color: var(--gray); }
+
+    .testi-note {
+      text-align: center;
+      margin-top: 36px;
+      font-size: 13px;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       GALLERY
+    ============================================================ */
+    .gallery { background: var(--white); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 240px 240px;
+      gap: 14px;
+    }
+    .gallery-grid .gi-0 { grid-column: span 2; grid-row: span 2; }
+
+    .gallery-item {
+      border-radius: var(--radius-sm);
+      background: var(--light);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-ph {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .gallery-ph i { font-size: 28px; color: var(--teal); opacity: .35; }
+    .gallery-ph p { font-size: 11.5px; text-align: center; line-height: 1.4; }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(34,188,189,.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .gallery-overlay i { font-size: 28px; color: white; }
+
+    /* ============================================================
+       BLOG
+    ============================================================ */
+    .blog { background: var(--light); }
+
+    .blog-soon {
+      text-align: center;
+      padding: 80px 40px;
+      background: white;
+      border-radius: var(--radius);
+      border: 2px dashed rgba(34,188,189,.28);
+    }
+    .blog-soon i { font-size: 56px; color: var(--teal); opacity: .25; margin-bottom: 20px; }
+    .blog-soon h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+    .blog-soon p  { font-size: 14.5px; color: var(--gray); max-width: 380px; margin: 0 auto 24px; }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    .contact { background: var(--dark); position: relative; overflow: hidden; }
+    .contact::after {
+      content: '';
+      position: absolute;
+      bottom: -300px; left: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,160,24,.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+
+    .contact .section-title    { color: white; }
+    .contact .section-subtitle { color: rgba(255,255,255,.55); }
+
+    .contact-items { margin-top: 40px; display: flex; flex-direction: column; gap: 22px; }
+    .contact-item  { display: flex; align-items: flex-start; gap: 16px; }
+    .ci-icon {
+      width: 46px; height: 46px;
+      min-width: 46px;
+      border-radius: 11px;
+      background: rgba(34,188,189,.13);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+      font-size: 17px;
+    }
+    .ci-label { font-size: 11px; color: rgba(255,255,255,.38); text-transform: uppercase; letter-spacing: 1.5px; }
+    .ci-value { font-size: 14.5px; color: white; font-weight: 600; margin-top: 2px; }
+    .ci-sub   { font-size: 12.5px; color: rgba(255,255,255,.45); margin-top: 1px; }
+
+    .contact-social { margin-top: 36px; display: flex; gap: 10px; }
+    .soc-btn {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.55);
+      font-size: 17px;
+      transition: var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .soc-btn:hover { background: var(--teal); color: white; }
+
+    /* Form */
+    .contact-form {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .form-heading { font-size: 20px; font-weight: 700; color: white; margin-bottom: 28px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,.5);
+      letter-spacing: .5px;
+      margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,.07);
+      border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-sm);
+      padding: 11px 15px;
+      color: white;
+      font-family: var(--font);
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color .25s, background .25s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,.25); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--teal);
+      background: rgba(34,188,189,.07);
+    }
+    .form-group select option { background: #1a2424; color: white; }
+    .form-group textarea { resize: vertical; min-height: 96px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer { background: #0b1818; padding: 72px 0 0; }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 56px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .footer-logo { height: 42px; margin-bottom: 18px; }
+    .footer-tagline { font-size: 13.5px; color: rgba(255,255,255,.42); line-height: 1.7; max-width: 270px; }
+
+    .fc-title { font-size: 13px; font-weight: 700; color: white; margin-bottom: 18px; letter-spacing: .3px; }
+    .fc-links { display: flex; flex-direction: column; gap: 10px; }
+    .fc-links a { font-size: 13px; color: rgba(255,255,255,.45); transition: color .25s; }
+    .fc-links a:hover { color: var(--teal); }
+
+    .fc-schedule { display: flex; flex-direction: column; gap: 12px; }
+    .sched-row {}
+    .sched-day  { font-size: 11.5px; color: rgba(255,255,255,.38); }
+    .sched-hrs  { font-size: 13.5px; color: white; font-weight: 500; }
+
+    .footer-bottom {
+      padding: 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copy   { font-size: 12.5px; color: rgba(255,255,255,.28); }
+    .footer-credit { font-size: 12.5px; color: rgba(255,255,255,.28); }
+    .footer-credit span { color: var(--teal); font-weight: 600; }
+
+    /* ============================================================
+       WHATSAPP FLOAT
+    ============================================================ */
+    .wa-float {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      z-index: 9999;
+      width: 58px; height: 58px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 27px;
+      box-shadow: 0 8px 28px rgba(37,211,102,.42);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .wa-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 36px rgba(37,211,102,.55);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .hero-inner     { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual    { display: none; }
+      .why-grid       { grid-template-columns: 1fr; gap: 48px; }
+      .tech-grid      { grid-template-columns: repeat(2,1fr); }
+      .quirofano      { grid-template-columns: 1fr; gap: 36px; padding: 44px; }
+      .testi-grid     { grid-template-columns: repeat(2,1fr); }
+      .footer-grid    { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .network-card   { grid-template-columns: 1fr; gap: 28px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-actions { display: none; }
+      .hamburger   { display: flex; }
+      .section     { padding: 72px 0; }
+      .hero-inner  { text-align: center; padding: 48px 0; }
+      .hero-stats  { justify-content: center; }
+      .hero-actions{ justify-content: center; }
+      .section-subtitle { max-width: 100%; }
+      .why-features   { grid-template-columns: 1fr; }
+      .tech-grid      { grid-template-columns: 1fr; }
+      .testi-grid     { grid-template-columns: 1fr; }
+      .gallery-grid   {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 200px 200px 200px;
+      }
+      .gallery-grid .gi-0 { grid-column: span 1; grid-row: span 1; }
+      .contact-grid   { grid-template-columns: 1fr; gap: 48px; }
+      .footer-grid    { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom  { flex-direction: column; gap: 6px; text-align: center; }
+      .form-row       { grid-template-columns: 1fr; }
+      .quirofano      { padding: 32px 24px; }
+      .network-card   { padding: 36px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================================
+       HEADER
+  ================================================================ -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="#inicio" class="nav-logo">
+          <img src="assets/plusvet-horizontal-fullcolor.svg" alt="Plus Vet Clínica Veterinaria">
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+          <li><a href="#tecnologia">Tecnología</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="tel:+57000000000" class="btn btn-outline btn-sm">
+            <i class="fa-solid fa-phone"></i> Llamar
+          </a>
+          <a href="#contacto" class="btn btn-primary btn-sm">Agendar cita</a>
+        </div>
+
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="#servicios"  onclick="toggleMenu()">Servicios</a>
+    <a href="#nosotros"   onclick="toggleMenu()">Nosotros</a>
+    <a href="#equipo"     onclick="toggleMenu()">Equipo</a>
+    <a href="#tecnologia" onclick="toggleMenu()">Tecnología</a>
+    <a href="#galeria"    onclick="toggleMenu()">Galería</a>
+    <a href="#contacto"   onclick="toggleMenu()">Contacto</a>
+    <a href="#contacto" class="btn btn-primary" onclick="toggleMenu()">Agendar cita</a>
+  </nav>
+
+
+  <!-- ================================================================
+       HERO
+  ================================================================ -->
+  <section class="hero" id="inicio">
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+
+    <div class="container">
+      <div class="hero-inner">
+
+        <!-- Text -->
+        <div class="hero-text">
+          <div class="hero-tag">
+            <i class="fa-solid fa-location-dot"></i>
+            Santa Rosa de Cabal, Risaralda
+          </div>
+          <h1 class="hero-title">
+            La salud de<br>
+            tu mejor amigo,<br>
+            en las <span class="accent">mejores manos</span>
+          </h1>
+          <p class="hero-subtitle">
+            Clínica veterinaria especializada en perros y gatos. Atención médica de alto nivel, tecnología avanzada y amor por cada paciente.
+          </p>
+          <div class="hero-actions">
+            <a href="#contacto" class="btn btn-orange">
+              <i class="fa-solid fa-calendar-check"></i>
+              Agendar cita
+            </a>
+            <a href="#servicios" class="btn btn-ghost">
+              Ver servicios <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div>
+              <div class="hero-stat-num">24h</div>
+              <div class="hero-stat-lbl">Hospitalización</div>
+            </div>
+            <div>
+              <div class="hero-stat-num">8–9pm</div>
+              <div class="hero-stat-lbl">Consultas diarias</div>
+            </div>
+            <div>
+              <div class="hero-stat-num">7+</div>
+              <div class="hero-stat-lbl">Especialidades</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual -->
+        <div class="hero-visual">
+          <div class="hero-card">
+            <div class="hero-card-placeholder">
+              <i class="fa-solid fa-paw"></i>
+              <p>Foto principal de la clínica<br>o mascota en consulta</p>
+            </div>
+          </div>
+
+          <div class="hero-badge hero-badge-left">
+            <div class="badge-icon t"><i class="fa-solid fa-shield-halved"></i></div>
+            <div>
+              <div class="badge-main">Quirófano certificado</div>
+              <div class="badge-sub">Instalaciones de primer nivel</div>
+            </div>
+          </div>
+
+          <div class="hero-badge hero-badge-right">
+            <div class="badge-icon o"><i class="fa-solid fa-star"></i></div>
+            <div>
+              <div class="badge-main">Alta tecnología</div>
+              <div class="badge-sub">Diagnóstico avanzado</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       SERVICES
+  ================================================================ -->
+  <section class="services section" id="servicios">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="tag tag-pill">Lo que hacemos</span>
+        <h2 class="section-title">Servicios especializados<br>para tu mascota</h2>
+        <p class="section-subtitle">Un equipo médico comprometido con la salud integral de perros y gatos, apoyado por tecnología de diagnóstico avanzada.</p>
+      </div>
+
+      <div class="services-grid">
+
+        <div class="service-card fade-up d1">
+          <div class="svc-icon"><i class="fa-solid fa-stethoscope"></i></div>
+          <h3 class="svc-name">Medicina General</h3>
+          <p class="svc-desc">Consultas de rutina, diagnósticos, vacunación y seguimiento preventivo para mantener a tu mascota en óptimas condiciones.</p>
+        </div>
+
+        <div class="service-card fade-up d2">
+          <div class="svc-icon o"><i class="fa-solid fa-syringe"></i></div>
+          <h3 class="svc-name">Cirugía</h3>
+          <p class="svc-desc">Procedimientos quirúrgicos en quirófano certificado, con los más altos estándares de bioseguridad y cuidado perioperatorio.</p>
+        </div>
+
+        <div class="service-card fade-up d3">
+          <div class="svc-icon"><i class="fa-solid fa-scissors"></i></div>
+          <h3 class="svc-name">Esquimiatría</h3>
+          <p class="svc-desc">Atención especializada al pelaje, piel y estado externo de tu mascota, con técnicas y productos de categoría profesional.</p>
+        </div>
+
+        <div class="service-card fade-up d4">
+          <div class="svc-icon o"><i class="fa-solid fa-baby"></i></div>
+          <h3 class="svc-name">Pediatría</h3>
+          <p class="svc-desc">Atención especializada para cachorros y gatitos: desparasitación, vacunas y seguimiento en cada etapa de su desarrollo.</p>
+        </div>
+
+        <div class="service-card fade-up d5">
+          <div class="svc-icon"><i class="fa-solid fa-house-medical"></i></div>
+          <h3 class="svc-name">Medicina Interna y Hospitalización</h3>
+          <p class="svc-desc">Diagnóstico y tratamiento de patologías internas complejas, con hospitalización 24 horas para los casos que lo requieran.</p>
+        </div>
+
+        <div class="service-card fade-up d6">
+          <div class="svc-icon o"><i class="fa-solid fa-x-ray"></i></div>
+          <h3 class="svc-name">Imágenes Diagnósticas</h3>
+          <p class="svc-desc">Radiografía digital, ecografía y herramientas de imagen avanzadas para evaluaciones rápidas, precisas y no invasivas.</p>
+        </div>
+
+        <div class="service-card fade-up">
+          <div class="svc-icon"><i class="fa-solid fa-microscope"></i></div>
+          <h3 class="svc-name">Oncología</h3>
+          <p class="svc-desc">Detección temprana, diagnóstico y manejo de enfermedades oncológicas con protocolos actualizados y atención especializada.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       WHY US
+  ================================================================ -->
+  <section class="why section" id="nosotros">
+    <div class="container">
+      <div class="why-grid">
+
+        <!-- Left -->
+        <div>
+          <span class="tag tag-orange">¿Por qué Plus Vet?</span>
+          <h2 class="section-title fade-up" style="color:white;">Donde la ciencia<br>y el amor por los<br>animales se encuentran</h2>
+          <p class="section-subtitle fade-up" style="color:rgba(255,255,255,.55);">
+            Más que una clínica, somos un equipo comprometido con la calidad de vida de cada mascota y la tranquilidad de su familia.
+          </p>
+
+          <div class="why-features">
+            <div class="why-feat fade-up d1">
+              <div class="why-feat-icon">🏥</div>
+              <div class="why-feat-title">Quirófano Certificado</div>
+              <div class="why-feat-text">Instalaciones quirúrgicas propias y disponibles para colegas especialistas.</div>
+            </div>
+            <div class="why-feat fade-up d2">
+              <div class="why-feat-icon">🔬</div>
+              <div class="why-feat-title">Alta Tecnología</div>
+              <div class="why-feat-text">Equipos de diagnóstico avanzados para mejores resultados en cada procedimiento.</div>
+            </div>
+            <div class="why-feat fade-up d3">
+              <div class="why-feat-icon">🌐</div>
+              <div class="why-feat-title">Red de Especialistas</div>
+              <div class="why-feat-text">Convenios con especialistas de múltiples áreas para casos que lo requieran.</div>
+            </div>
+            <div class="why-feat fade-up d4">
+              <div class="why-feat-icon">🌙</div>
+              <div class="why-feat-title">Hospitalización 24h</div>
+              <div class="why-feat-text">Cuidado médico continuo para pacientes hospitalizados, sin importar la hora.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="why-right fade-up">
+          <div class="why-main">
+            <div class="why-main-emoji">🐾</div>
+            <div class="why-main-title">Solo perros y gatos</div>
+            <div class="why-main-text">Nos especializamos exclusivamente en caninos y felinos para brindarte un servicio más enfocado, profundo y de mayor calidad.</div>
+          </div>
+
+          <div class="why-stats">
+            <div class="why-stat">
+              <div class="why-stat-num">8am</div>
+              <div class="why-stat-label">Apertura diaria</div>
+            </div>
+            <div class="why-stat">
+              <div class="why-stat-num">9pm</div>
+              <div class="why-stat-label">Cierre de consultas</div>
+            </div>
+            <div class="why-stat" style="grid-column: span 2;">
+              <div class="why-stat-num" style="color: var(--orange);">24h</div>
+              <div class="why-stat-label">Hospitalización disponible siempre</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       TEAM
+  ================================================================ -->
+  <section class="team section" id="equipo">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="tag tag-pill">Nuestro equipo</span>
+        <h2 class="section-title">Profesionales que aman<br>lo que hacen</h2>
+        <p class="section-subtitle">Médicos veterinarios con formación sólida, dedicados al diagnóstico preciso y al trato humano con cada paciente.</p>
+      </div>
+
+      <div class="team-grid">
+
+        <div class="team-card fade-up d1">
+          <div class="team-photo">
+            <i class="fa-solid fa-user-doctor"></i>
+            <div class="team-photo-hint">Foto del profesional</div>
+          </div>
+          <div class="team-body">
+            <div class="team-name">Dr. [Nombre Apellido]</div>
+            <div class="team-role">Médico Veterinario</div>
+            <p class="team-bio">Especializado en medicina interna y cirugía, con experiencia en el manejo de casos complejos en perros y gatos. Comprometido con el diagnóstico preciso y el bienestar animal.</p>
+          </div>
+        </div>
+
+        <div class="team-card fade-up d2">
+          <div class="team-photo">
+            <i class="fa-solid fa-user-doctor"></i>
+            <div class="team-photo-hint">Foto del profesional</div>
+          </div>
+          <div class="team-body">
+            <div class="team-name">Dra. [Nombre Apellido]</div>
+            <div class="team-role">Médica Veterinaria</div>
+            <p class="team-bio">Especializada en pediatría veterinaria y medicina preventiva, con enfoque en medicina felina. Apasionada por la educación de los propietarios y el acompañamiento en cada etapa de la vida de la mascota.</p>
+          </div>
+        </div>
+
+        <!-- Network card -->
+        <div class="network-card fade-up">
+          <div>
+            <h3 class="net-title">Red de especialistas en convenio</h3>
+            <p class="net-text">Cuando la complejidad del caso lo exige, tenemos acceso a un amplio portafolio de colegas especialistas. A través de convenios activos, tu mascota puede recibir atención de subespecialistas de diversas áreas, sin tener que buscar otra clínica.</p>
+            <div class="net-tags">
+              <span class="net-tag">Cardiología</span>
+              <span class="net-tag">Dermatología</span>
+              <span class="net-tag">Neurología</span>
+              <span class="net-tag">Oftalmología</span>
+              <span class="net-tag">Ortopedia</span>
+              <span class="net-tag">Oncología avanzada</span>
+              <span class="net-tag">Rehabilitación</span>
+              <span class="net-tag">Endocrinología</span>
+            </div>
+          </div>
+          <div>
+            <a href="#contacto" class="btn btn-orange">
+              Consultar disponibilidad
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       TECHNOLOGY
+  ================================================================ -->
+  <section class="technology section" id="tecnologia">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="tag tag-pill">Infraestructura y tecnología</span>
+        <h2 class="section-title">Equipados para dar<br>lo mejor a tu mascota</h2>
+        <p class="section-subtitle">Invertimos en equipos de alta tecnología para que cada diagnóstico sea más preciso y cada procedimiento sea más seguro.</p>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-card fade-up d1">
+          <div class="tech-icon"><i class="fa-solid fa-x-ray"></i></div>
+          <h3 class="tech-name">Rayos X Digital</h3>
+          <p class="tech-desc">Imágenes de alta resolución para diagnósticos óseos, torácicos y abdominales con resultados inmediatos.</p>
+        </div>
+        <div class="tech-card fade-up d2">
+          <div class="tech-icon"><i class="fa-solid fa-wave-square"></i></div>
+          <h3 class="tech-name">Ecografía</h3>
+          <p class="tech-desc">Visualización en tiempo real de órganos internos de forma no invasiva para diagnósticos precisos.</p>
+        </div>
+        <div class="tech-card fade-up d3">
+          <div class="tech-icon"><i class="fa-solid fa-vials"></i></div>
+          <h3 class="tech-name">Laboratorio Clínico</h3>
+          <p class="tech-desc">Análisis de sangre, orina y otros fluidos con equipos automatizados para resultados rápidos.</p>
+        </div>
+        <div class="tech-card fade-up d4">
+          <div class="tech-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+          <h3 class="tech-name">Monitoreo Continuo</h3>
+          <p class="tech-desc">Control constante de signos vitales durante procedimientos quirúrgicos y hospitalización.</p>
+        </div>
+        <div class="tech-card fade-up d5">
+          <div class="tech-icon"><i class="fa-solid fa-wind"></i></div>
+          <h3 class="tech-name">Anestesia Inhalatoria</h3>
+          <p class="tech-desc">Sistema moderno para cirugías más seguras y recuperación más rápida y confortable.</p>
+        </div>
+        <div class="tech-card fade-up d6">
+          <div class="tech-icon"><i class="fa-solid fa-capsules"></i></div>
+          <h3 class="tech-name">Farmacia Propia</h3>
+          <p class="tech-desc">Stock completo de medicamentos veterinarios para garantizar tratamientos inmediatos y continuos.</p>
+        </div>
+      </div>
+
+      <!-- Quirofano highlight -->
+      <div class="quirofano fade-up">
+        <div>
+          <span class="tag tag-orange tag-pill tag-pill-orange">Instalación destacada</span>
+          <h3 class="quirofano-title">Quirófano Certificado</h3>
+          <p class="quirofano-text">Contamos con un quirófano habilitado y certificado, equipado con tecnología avanzada para procedimientos de alta complejidad. Las instalaciones no solo se destinan a nuestros propios pacientes: también están disponibles para alquiler por parte de colegas veterinarios que requieran un espacio de primer nivel para sus cirugías.</p>
+          <div class="quirofano-list">
+            <div class="quirofano-item"><i class="fa-solid fa-circle-check"></i> Certificado y habilitado ante entidades competentes</div>
+            <div class="quirofano-item"><i class="fa-solid fa-circle-check"></i> Equipos de anestesia, monitoreo y soporte vital</div>
+            <div class="quirofano-item"><i class="fa-solid fa-circle-check"></i> Disponible para cirujanos externos previa reserva</div>
+            <div class="quirofano-item"><i class="fa-solid fa-circle-check"></i> Protocolos rigurosos de bioseguridad y asepsia</div>
+          </div>
+          <a href="#contacto" class="btn btn-orange">
+            Solicitar información <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="quirofano-visual">
+          <i class="fa-solid fa-kit-medical"></i>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       TESTIMONIALS
+  ================================================================ -->
+  <section class="testimonials section" id="testimonios">
+    <div class="container">
+      <div class="section-header fade-up" style="text-align:center;">
+        <span class="tag tag-pill">Lo que dicen</span>
+        <h2 class="section-title">Familias que confían<br>en Plus Vet</h2>
+      </div>
+
+      <div class="testi-grid">
+
+        <div class="testi-card fade-up d1">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Excelente atención, el equipo médico es muy profesional y se nota el amor que le tienen a los animales. Mi perrita salió de cirugía perfectamente y el seguimiento postoperatorio fue impecable.</p>
+          <div class="testi-author">
+            <div class="testi-avatar">M</div>
+            <div>
+              <div class="testi-name">María Fernanda G.</div>
+              <div class="testi-meta">Mamá de Luna 🐕</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card fade-up d2">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Llevar a Milo fue la mejor decisión que tomé. Las instalaciones son modernas, el diagnóstico fue rápido y el tratamiento muy acertado. En poco tiempo recuperó su energía completamente.</p>
+          <div class="testi-author">
+            <div class="testi-avatar">C</div>
+            <div>
+              <div class="testi-name">Carlos A. R.</div>
+              <div class="testi-meta">Papá de Milo 🐈</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card fade-up d3">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Gracias a la hospitalización 24 horas pudimos atender una emergencia nocturna de nuestro gato. El personal de turno fue muy cálido y eficiente. Quedamos muy tranquilos con el servicio.</p>
+          <div class="testi-author">
+            <div class="testi-avatar">A</div>
+            <div>
+              <div class="testi-name">Andrea V.</div>
+              <div class="testi-meta">Mamá de Simba 🐈</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p class="testi-note fade-up">* Testimonios de ejemplo — reemplazar con reseñas reales de clientes.</p>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       GALLERY
+  ================================================================ -->
+  <section class="gallery section" id="galeria">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="tag tag-pill">Galería</span>
+        <h2 class="section-title">Nuestras instalaciones</h2>
+        <p class="section-subtitle">Espacios pensados para la comodidad de tu mascota y la confianza de tu familia.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item gi-0 fade-up">
+          <div class="gallery-ph">
+            <i class="fa-solid fa-image"></i>
+            <p>Foto destacada<br>(fachada o sala principal)</p>
+          </div>
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up d1">
+          <div class="gallery-ph">
+            <i class="fa-solid fa-image"></i>
+            <p>Sala de consulta</p>
+          </div>
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up d2">
+          <div class="gallery-ph">
+            <i class="fa-solid fa-image"></i>
+            <p>Quirófano</p>
+          </div>
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up d3">
+          <div class="gallery-ph">
+            <i class="fa-solid fa-image"></i>
+            <p>Área de hospitalización</p>
+          </div>
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up d4">
+          <div class="gallery-ph">
+            <i class="fa-solid fa-image"></i>
+            <p>Equipo diagnóstico</p>
+          </div>
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       BLOG
+  ================================================================ -->
+  <section class="blog section" id="blog">
+    <div class="container">
+      <div class="section-header fade-up" style="text-align:center;">
+        <span class="tag tag-pill">Blog</span>
+        <h2 class="section-title">Consejos para el cuidado<br>de tu mascota</h2>
+      </div>
+
+      <div class="blog-soon fade-up">
+        <i class="fa-solid fa-newspaper"></i>
+        <h3>Próximamente</h3>
+        <p>Estamos preparando contenido útil sobre salud, nutrición, prevención y bienestar para perros y gatos. ¡Muy pronto!</p>
+        <a href="#contacto" class="btn btn-outline">
+          <i class="fa-regular fa-bell"></i> Notificarme cuando haya contenido
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       CONTACT
+  ================================================================ -->
+  <section class="contact section" id="contacto">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Info -->
+        <div>
+          <span class="tag tag-orange tag-pill tag-pill-orange">Contáctanos</span>
+          <h2 class="section-title fade-up">Agenda la cita<br>de tu mascota</h2>
+          <p class="section-subtitle fade-up">Estamos listos para atenderte. Escríbenos, llámanos o visítanos directamente en la clínica.</p>
+
+          <div class="contact-items">
+            <div class="contact-item fade-up d1">
+              <div class="ci-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <div class="ci-label">Dirección</div>
+                <div class="ci-value">Santa Rosa de Cabal, Risaralda</div>
+                <div class="ci-sub">Colombia — Dirección exacta por confirmar</div>
+              </div>
+            </div>
+            <div class="contact-item fade-up d2">
+              <div class="ci-icon"><i class="fa-solid fa-clock"></i></div>
+              <div>
+                <div class="ci-label">Horario de atención</div>
+                <div class="ci-value">Lun – Sáb: 8:00 am – 9:00 pm</div>
+                <div class="ci-sub">Hospitalización disponible las 24 horas</div>
+              </div>
+            </div>
+            <div class="contact-item fade-up d3">
+              <div class="ci-icon"><i class="fa-brands fa-whatsapp"></i></div>
+              <div>
+                <div class="ci-label">Teléfono / WhatsApp</div>
+                <div class="ci-value">+57 [Número por confirmar]</div>
+                <div class="ci-sub">Respuesta rápida por WhatsApp</div>
+              </div>
+            </div>
+            <div class="contact-item fade-up d4">
+              <div class="ci-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <div class="ci-label">Correo electrónico</div>
+                <div class="ci-value">contacto@plusvet.com.co</div>
+                <div class="ci-sub">Por confirmar</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-social">
+            <a href="#" class="soc-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="soc-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="soc-btn" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="soc-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="contact-form fade-up">
+          <div class="form-heading">Solicitar una cita</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre completo *</label>
+              <input type="text" placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+              <label>Teléfono / WhatsApp *</label>
+              <input type="tel" placeholder="+57 300 000 0000">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tipo de mascota *</label>
+              <select>
+                <option value="">Seleccionar</option>
+                <option>🐕 Perro</option>
+                <option>🐈 Gato</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Nombre de la mascota</label>
+              <input type="text" placeholder="¿Cómo se llama?">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Servicio de interés *</label>
+            <select>
+              <option value="">Seleccionar servicio</option>
+              <option>Medicina General</option>
+              <option>Cirugía</option>
+              <option>Esquimiatría</option>
+              <option>Pediatría</option>
+              <option>Medicina Interna</option>
+              <option>Imágenes Diagnósticas</option>
+              <option>Oncología</option>
+              <option>Hospitalización</option>
+              <option>Alquiler de Quirófano</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Mensaje o descripción del caso</label>
+            <textarea placeholder="Cuéntanos brevemente sobre tu mascota y el motivo de consulta…"></textarea>
+          </div>
+
+          <button class="btn btn-orange" id="submitBtn" style="width:100%;" onclick="handleSubmit(this)">
+            <i class="fa-solid fa-paper-plane"></i>
+            Enviar solicitud
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       FOOTER
+  ================================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div>
+          <img src="assets/plusvet-horizontal-blanco.svg" alt="Plus Vet" class="footer-logo">
+          <p class="footer-tagline">Clínica veterinaria especializada en perros y gatos. Salud, bienestar y amor para tu mejor amigo en Santa Rosa de Cabal, Risaralda.</p>
+        </div>
+
+        <div>
+          <div class="fc-title">Servicios</div>
+          <div class="fc-links">
+            <a href="#servicios">Medicina General</a>
+            <a href="#servicios">Cirugía</a>
+            <a href="#servicios">Pediatría</a>
+            <a href="#servicios">Medicina Interna</a>
+            <a href="#servicios">Imágenes Diagnósticas</a>
+            <a href="#servicios">Oncología</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="fc-title">Clínica</div>
+          <div class="fc-links">
+            <a href="#nosotros">¿Por qué Plus Vet?</a>
+            <a href="#equipo">Equipo médico</a>
+            <a href="#tecnologia">Tecnología</a>
+            <a href="#galeria">Galería</a>
+            <a href="#blog">Blog</a>
+            <a href="#contacto">Contacto</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="fc-title">Horarios</div>
+          <div class="fc-schedule">
+            <div class="sched-row">
+              <div class="sched-day">Lunes – Sábado</div>
+              <div class="sched-hrs">8:00 am – 9:00 pm</div>
+            </div>
+            <div class="sched-row">
+              <div class="sched-day">Hospitalización</div>
+              <div class="sched-hrs">24 horas</div>
+            </div>
+            <div class="sched-row">
+              <div class="sched-day">Ubicación</div>
+              <div class="sched-hrs" style="font-size:12.5px; line-height:1.5;">Santa Rosa de Cabal,<br>Risaralda, Colombia</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 Plus Vet Clínica Veterinaria. Todos los derechos reservados.</div>
+        <div class="footer-credit">Diseñado y desarrollado por <span>JOINKOD</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- WhatsApp floating button -->
+  <a href="https://wa.me/57000000000" class="wa-float" target="_blank" rel="noopener" title="Escríbenos por WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+
+  <!-- ================================================================
+       SCRIPTS
+  ================================================================ -->
+  <script>
+    // --- Sticky header ---
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // --- Mobile menu ---
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+    document.addEventListener('click', e => {
+      const menu = document.getElementById('mobileMenu');
+      const burger = document.getElementById('hamburger');
+      if (!menu.contains(e.target) && !burger.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
+
+    // --- Smooth scroll ---
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' });
+      });
+    });
+
+    // --- Scroll reveal ---
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // --- Form submit feedback ---
+    function handleSubmit(btn) {
+      btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Solicitud enviada!';
+      btn.style.background = 'var(--teal)';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3500);
+    }
+  </script>
+
+</body>
+</html>
