@@ -2,7 +2,7 @@
 
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
-> **Estado:** En desarrollo — v1.0 (estructura y diseño base)  
+> **Estado:** En desarrollo — v1.1 activo en Vercel  
 > **Última actualización:** Mayo 2025
 
 ---
@@ -189,48 +189,46 @@ plusvet/
 
 ---
 
-## 10. Despliegue en Vercel vía GitHub
+## 10. Infraestructura y flujo de trabajo
 
-### Paso a paso
+### Repositorio
+- **GitHub:** `github.com/joinkod/plusvetweb`
+- **Rama principal:** `main`
+- **Repo clonado localmente** en carpeta de trabajo del equipo JOINKOD
 
-**1. Repositorio en GitHub**
-```bash
-git init
-git add .
-git commit -m "feat: Plus Vet website v1.0 - estructura base"
-git branch -M main
-git remote add origin https://github.com/TU_USUARIO/plusvet-web.git
-git push -u origin main
-```
+### Despliegue
+- **Plataforma:** Vercel
+- **Trigger:** Automático en cada push a `main`
+- **Estado:** ✅ Activo y desplegado
 
-**2. Conectar con Vercel**
-1. Ir a [vercel.com](https://vercel.com) e iniciar sesión
-2. Click en **"Add New Project"**
-3. Importar el repositorio `plusvet-web` desde GitHub
-4. Vercel detecta automáticamente que es un sitio estático
-5. Click en **"Deploy"** — sin configuración adicional
-
-**3. Dominio personalizado (cuando se tenga)**
+### Dominio personalizado (pendiente)
 - En Vercel: Settings → Domains → Add Domain
-- Ingresar el dominio (ej. `plusvet.com.co`)
-- Configurar los DNS según las instrucciones de Vercel
+- Configurar DNS según instrucciones de Vercel
 
-**4. Actualizaciones futuras**
-```bash
-# Hacer cambios al código, luego:
-git add .
-git commit -m "fix: actualizar datos de contacto"
-git push
-# Vercel despliega automáticamente al hacer push a main
+### Flujo de trabajo
 ```
+Claude.ai (chat) ──► genera archivos / documentación
+Claude Code (local) ──► commits y push a main
+                                    │
+                                    ▼
+                        GitHub (joinkod/plusvetweb)
+                                    │
+                                    ▼
+                        Vercel (deploy automático)
+```
+
+### Cómo iniciar una nueva sesión en Claude.ai
+Al inicio de cada conversación escribir:
+> *"Lee el archivo `PLUSVET_PROJECT.md` del repositorio `joinkod/plusvetweb` en GitHub y úsalo como contexto para continuar trabajando en este proyecto."*
 
 ---
 
 ## 11. Historial de versiones
 
-| Versión | Fecha      | Descripción                                      |
-|---------|------------|--------------------------------------------------|
-| v1.0    | Mayo 2025  | Estructura completa, diseño base, contenido placeholder |
+| Versión | Fecha      | Descripción                                                                |
+|---------|------------|----------------------------------------------------------------------------|
+| v1.0    | Mayo 2025  | Estructura completa, diseño base, contenido placeholder                    |
+| v1.1    | Mayo 2025  | Repo en GitHub, desplegado en Vercel, flujo Claude.ai + Claude Code activo |
 
 ---
 
