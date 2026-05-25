@@ -1079,17 +1079,31 @@
       -webkit-mask-image: linear-gradient(
         to bottom,
         transparent 0%,
-        black 18%,
-        black 82%,
+        black 30%,
+        black 70%,
         transparent 100%
       );
       mask-image: linear-gradient(
         to bottom,
         transparent 0%,
-        black 18%,
-        black 82%,
+        black 30%,
+        black 70%,
         transparent 100%
       );
+    }
+    /* Soft color fade overlay that blends the image into the section bg at top/bottom */
+    .services-bg::after, .section-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          var(--section-bg, #fff) 0%,
+          transparent 22%,
+          transparent 78%,
+          var(--section-bg, #fff) 100%
+        );
+      pointer-events: none;
     }
     .services-bg img, .section-bg img {
       width: 100%;
