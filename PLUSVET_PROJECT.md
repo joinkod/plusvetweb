@@ -63,9 +63,9 @@ Los archivos SVG están en la carpeta `/assets/`:
 |-----------------|----------------------------------------------|
 | Nombre          | Plus Vet Clínica Veterinaria                 |
 | Ciudad          | Santa Rosa de Cabal, Risaralda, Colombia     |
-| Dirección       | **Por confirmar**                            |
-| Teléfono/WA     | **Por confirmar**                            |
-| Correo          | **Por confirmar** (placeholder: contacto@plusvet.com.co) |
+| Dirección       | Carrera 14 # 24 - 31                         |
+| Teléfono/WA     | +57 322 529 2764                             |
+| Correo          | pplusvet@gmail.com                           |
 | Horario         | Lunes a Sábado: 8:00 am – 9:00 pm           |
 | Hospitalización | 24 horas (a puerta cerrada)                  |
 | Pacientes       | Solo perros y gatos                          |
@@ -100,8 +100,8 @@ Los archivos SVG están en la carpeta `/assets/`:
 
 | Campo       | Estado           |
 |-------------|------------------|
-| Médico 1    | Nombre y bio pendientes |
-| Médico 2    | Nombre y bio pendientes |
+| Médico 1    | Dra. María Camila Acevedo |
+| Médico 2    | Dr. Sebastián Florez      |
 | Foto 1      | Pendiente (placeholder activo) |
 | Foto 2      | Pendiente (placeholder activo) |
 
@@ -145,10 +145,10 @@ Cardiología, Dermatología, Neurología, Oftalmología, Ortopedia, Oncología a
 ## 8. Contenido pendiente
 
 ### 🔴 Bloqueantes (necesarios antes de publicar)
-- [ ] Número de teléfono / WhatsApp real
-- [ ] Dirección exacta de la clínica
-- [ ] Correo electrónico de contacto
-- [ ] Nombres completos de los 2 médicos
+- [x] Número de teléfono / WhatsApp real → +57 322 529 2764
+- [x] Dirección exacta de la clínica → Carrera 14 # 24 - 31
+- [x] Correo electrónico de contacto → pplusvet@gmail.com
+- [x] Nombres completos de los 2 médicos → Dra. María Camila Acevedo / Dr. Sebastián Florez
 - [ ] Especialidades y bio de cada médico
 
 ### 🟡 Importantes (mejoran significativamente el sitio)
