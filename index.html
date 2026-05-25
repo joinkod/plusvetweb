@@ -1106,6 +1106,32 @@
     .gallery     > .container,
     .blog        > .container { position: relative; z-index: 1; }
 
+    /* ============================================================
+       STACKING CARDS — scroll-driven (Chrome / Edge / Firefox)
+       Safari y navegadores sin soporte: scroll normal sin cambios
+    ============================================================ */
+    @supports (animation-timeline: scroll()) {
+      .cards-stack .section {
+        position: sticky;
+        top: 0;
+        z-index: var(--i, 1);
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -6px 40px rgba(0,0,0,.13);
+        overflow: hidden;
+
+        animation: card-stack-exit linear both;
+        animation-timeline: view();
+        animation-range: exit -320px exit 0px;
+        transform-origin: 50% 0%;
+        will-change: transform;
+      }
+
+      @keyframes card-stack-exit {
+        from { transform: scale(1);    filter: brightness(1);    }
+        to   { transform: scale(0.90); filter: brightness(0.86); }
+      }
+    }
+
     /* Floating cards */
     .why-feat { animation: card-float 5s ease-in-out infinite; }
     .why-feat:nth-child(2) { animation-delay: 1.2s; }
@@ -1374,10 +1400,12 @@
   </section>
 
 
+  <div class="cards-stack">
+
   <!-- ================================================================
        SERVICES
   ================================================================ -->
-  <section class="services section" id="servicios">
+  <section class="services section" id="servicios" style="--i:1">
     <div class="services-bg">
       <img src="https://images.unsplash.com/photo-1725409796872-8b41e8eca929?w=1600&auto=format&fit=crop&q=60" alt="" aria-hidden="true">
     </div>
@@ -1440,7 +1468,7 @@
   <!-- ================================================================
        WHY US
   ================================================================ -->
-  <section class="why section" id="nosotros">
+  <section class="why section" id="nosotros" style="--i:2">
     <div class="anim-bg">
       <div class="anim-orb anim-orb--teal"   style="width:640px;height:640px;top:-220px;right:-120px;animation:anim-float-1 12s ease-in-out infinite;"></div>
       <div class="anim-orb anim-orb--teal"   style="width:420px;height:420px;bottom:-160px;left:-80px;animation:anim-float-2 16s ease-in-out infinite;opacity:.7;"></div>
@@ -1513,7 +1541,7 @@
   <!-- ================================================================
        TEAM
   ================================================================ -->
-  <section class="team section" id="equipo">
+  <section class="team section" id="equipo" style="--i:3">
     <div class="section-bg">
       <img src="https://images.unsplash.com/photo-1654895716780-b4664497420d?w=1600&auto=format&fit=crop&q=60" alt="" aria-hidden="true">
     </div>
@@ -1581,7 +1609,7 @@
   <!-- ================================================================
        TECHNOLOGY
   ================================================================ -->
-  <section class="technology section" id="tecnologia">
+  <section class="technology section" id="tecnologia" style="--i:4">
     <div class="section-bg">
       <img src="https://images.unsplash.com/photo-1632236542159-809925d85fc0?w=1600&auto=format&fit=crop&q=60" alt="" aria-hidden="true">
     </div>
@@ -1654,7 +1682,7 @@
   <!-- ================================================================
        TESTIMONIALS
   ================================================================ -->
-  <section class="testimonials section" id="testimonios">
+  <section class="testimonials section" id="testimonios" style="--i:5">
     <div class="section-bg">
       <img src="https://images.unsplash.com/photo-1728013274420-ed02b1f58887?w=1600&auto=format&fit=crop&q=60" alt="" aria-hidden="true">
     </div>
@@ -1714,7 +1742,7 @@
   <!-- ================================================================
        GALLERY
   ================================================================ -->
-  <section class="gallery section" id="galeria">
+  <section class="gallery section" id="galeria" style="--i:6">
     <div class="section-bg">
       <img src="https://images.unsplash.com/photo-1733783489145-f3d3ee7a9ccf?w=1600&auto=format&fit=crop&q=60" alt="" aria-hidden="true">
     </div>
@@ -1769,7 +1797,7 @@
   <!-- ================================================================
        BLOG
   ================================================================ -->
-  <section class="blog section" id="blog">
+  <section class="blog section" id="blog" style="--i:7">
     <div class="section-bg">
       <img src="https://images.unsplash.com/photo-1599443015574-be5fe8a05783?w=1600&auto=format&fit=crop&q=60" alt="" aria-hidden="true">
     </div>
@@ -1794,7 +1822,7 @@
   <!-- ================================================================
        CONTACT
   ================================================================ -->
-  <section class="contact section" id="contacto">
+  <section class="contact section" id="contacto" style="--i:8">
     <div class="anim-bg">
       <div class="anim-orb anim-orb--teal"   style="width:560px;height:560px;top:-180px;left:-100px;animation:anim-float-2 14s ease-in-out infinite;"></div>
       <div class="anim-orb anim-orb--orange" style="width:380px;height:380px;bottom:-120px;right:-80px;animation:anim-float-1 11s ease-in-out infinite;opacity:.85;"></div>
@@ -1913,6 +1941,8 @@
     </div>
   </section>
 
+
+  </div><!-- /cards-stack -->
 
   <!-- ================================================================
        FOOTER
