@@ -981,6 +981,61 @@
     .footer-credit span { color: var(--teal); font-weight: 600; }
 
     /* ============================================================
+       CALL POPOVER (desktop)
+    ============================================================ */
+    .call-wrap { position: relative; }
+    .call-popover {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border: 1.5px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow-lg);
+      white-space: nowrap;
+      z-index: 2000;
+      text-align: center;
+    }
+    .call-popover::before {
+      content: '';
+      position: absolute;
+      top: -7px; left: 50%;
+      transform: translateX(-50%);
+      width: 12px; height: 12px;
+      background: white;
+      border-left: 1.5px solid rgba(0,0,0,.08);
+      border-top: 1.5px solid rgba(0,0,0,.08);
+      rotate: 45deg;
+    }
+    .call-popover.open { display: block; }
+    .call-pop-num {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+      letter-spacing: .5px;
+    }
+    .call-pop-copy {
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 16px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .call-pop-copy:hover { background: var(--teal-dark); }
+
+    /* ============================================================
        WHATSAPP FLOAT
     ============================================================ */
     .wa-float {
@@ -1065,9 +1120,17 @@
         </ul>
 
         <div class="nav-actions">
-          <a href="tel:+573225292764" class="btn btn-outline btn-sm">
-            <i class="fa-solid fa-phone"></i> Llamar
-          </a>
+          <div class="call-wrap">
+            <a href="tel:+573225292764" class="btn btn-outline btn-sm" onclick="handleCall(event)">
+              <i class="fa-solid fa-phone"></i> Llamar
+            </a>
+            <div class="call-popover" id="callPopover">
+              <div class="call-pop-num">+57 322 529 2764</div>
+              <button class="call-pop-copy" onclick="copyPhone(this)">
+                <i class="fa-regular fa-copy"></i> Copiar número
+              </button>
+            </div>
+          </div>
           <a href="#contacto" class="btn btn-primary btn-sm">Agendar cita</a>
         </div>
 
@@ -1790,6 +1853,30 @@
       entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // --- Call button (desktop: popover / mobile: tel link) ---
+    function handleCall(e) {
+      if (navigator.maxTouchPoints === 0) {
+        e.preventDefault();
+        document.getElementById('callPopover').classList.toggle('open');
+      }
+    }
+    function copyPhone(btn) {
+      navigator.clipboard.writeText('+573225292764').then(() => {
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiado!';
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar número';
+          document.getElementById('callPopover').classList.remove('open');
+        }, 1800);
+      });
+    }
+    document.addEventListener('click', e => {
+      const wrap = document.querySelector('.call-wrap');
+      const popover = document.getElementById('callPopover');
+      if (popover && wrap && !wrap.contains(e.target)) {
+        popover.classList.remove('open');
+      }
+    });
 
     // --- Form submit feedback ---
     function handleSubmit(btn) {
