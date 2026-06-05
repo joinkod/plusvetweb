@@ -1273,7 +1273,124 @@
       .form-row       { grid-template-columns: 1fr; }
       .quirofano      { padding: 32px 24px; }
       .network-card   { padding: 36px 28px; }
+      .social-grid    { grid-template-columns: 1fr 1fr; }
     }
+
+    @media (max-width: 480px) {
+      .social-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       COMUNIDAD / SOCIAL
+    ============================================================ */
+    .comunidad { background: var(--dark); position: relative; overflow: hidden; }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .social-card {
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.04);
+      transition: var(--transition);
+    }
+    .social-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,.15);
+      background: rgba(255,255,255,.07);
+    }
+
+    .sc-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: white;
+      margin-bottom: 20px; flex-shrink: 0;
+    }
+    .sc-icon.ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .sc-icon.fb { background: #1877F2; }
+    .sc-icon.tt { background: #010101; border: 1px solid rgba(255,255,255,.12); }
+    .sc-icon.wa { background: #25D366; }
+
+    .sc-network { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.38); margin-bottom: 5px; }
+    .sc-name    { font-size: 17px; font-weight: 700; color: white; margin-bottom: 10px; }
+    .sc-desc    { font-size: 13px; color: rgba(255,255,255,.48); line-height: 1.7; flex: 1; margin-bottom: 24px; }
+
+    .sc-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 18px; border-radius: var(--radius-full);
+      font-size: 12.5px; font-weight: 600;
+      border: 1.5px solid rgba(255,255,255,.18);
+      color: white; background: transparent;
+      transition: var(--transition); text-decoration: none;
+      align-self: flex-start;
+    }
+    .sc-btn:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); }
+
+    /* ============================================================
+       MULTICHANNEL FLOAT
+    ============================================================ */
+    .multichannel {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      z-index: 9999;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+
+    .mc-items {
+      display: flex; flex-direction: column-reverse;
+      align-items: flex-end; gap: 10px;
+      transition: opacity .25s var(--ease), transform .25s var(--ease);
+    }
+    .mc-items.hidden { opacity: 0; pointer-events: none; transform: translateY(12px); }
+
+    .mc-item { display: flex; align-items: center; gap: 10px; }
+
+    .mc-label {
+      background: white; color: var(--dark);
+      font-size: 12px; font-weight: 600;
+      padding: 5px 13px; border-radius: 20px;
+      box-shadow: var(--shadow-sm); white-space: nowrap;
+      opacity: 0; transform: translateX(6px);
+      transition: opacity .2s, transform .2s;
+      pointer-events: none;
+    }
+    .mc-item:hover .mc-label { opacity: 1; transform: translateX(0); }
+
+    .mc-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 20px;
+      box-shadow: var(--shadow-md);
+      transition: transform .2s; text-decoration: none; flex-shrink: 0;
+    }
+    .mc-btn:hover { transform: scale(1.12); }
+    .mc-btn.wa { background: #25D366; box-shadow: 0 4px 16px rgba(37,211,102,.4); }
+    .mc-btn.ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .mc-btn.fb { background: #1877F2; }
+    .mc-btn.tt { background: #010101; }
+    .mc-btn.ph { background: var(--teal); box-shadow: 0 4px 16px rgba(34,188,189,.35); }
+
+    .mc-main {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 26px;
+      box-shadow: 0 8px 28px rgba(37,211,102,.42);
+      cursor: pointer; border: none; outline: none;
+      transition: transform .3s var(--ease), background .3s, box-shadow .3s;
+    }
+    .mc-main:hover { transform: scale(1.08); }
+    .mc-main.open  { background: var(--dark); box-shadow: var(--shadow-md); }
+    .mc-close { display: none; }
+    .mc-main.open .mc-open  { display: none; }
+    .mc-main.open .mc-close { display: block; }
   </style>
 </head>
 <body>
@@ -1884,10 +2001,10 @@
           </div>
 
           <div class="contact-social">
-            <a href="#" class="soc-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" class="soc-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/pplusvet/" class="soc-btn" title="Instagram" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.facebook.com/pplusvet" class="soc-btn" title="Facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://wa.me/573225292764" class="soc-btn" title="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="#" class="soc-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.tiktok.com/@pplusvet" class="soc-btn" title="TikTok" target="_blank" rel="noopener"><i class="fa-brands fa-tiktok"></i></a>
           </div>
         </div>
 
@@ -2024,6 +2141,7 @@
             <a href="#tecnologia">Tecnología</a>
             <a href="#galeria">Galería</a>
             <a href="#blog">Blog</a>
+            <a href="#comunidad">Redes sociales</a>
             <a href="#contacto">Contacto</a>
           </div>
         </div>
@@ -2056,10 +2174,109 @@
   </footer>
 
 
-  <!-- WhatsApp floating button -->
-  <a href="https://wa.me/573225292764" class="wa-float" target="_blank" rel="noopener" title="Escríbenos por WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i>
-  </a>
+  <!-- ================================================================
+       COMUNIDAD / SOCIAL
+  ================================================================ -->
+  <section class="comunidad section" id="comunidad">
+    <div class="anim-bg">
+      <div class="anim-orb anim-orb--teal"   style="width:500px;height:500px;top:-160px;right:-80px;animation:anim-float-1 13s ease-in-out infinite;opacity:.55;"></div>
+      <div class="anim-orb anim-orb--orange" style="width:320px;height:320px;bottom:-100px;left:-60px;animation:anim-float-2 17s ease-in-out infinite;opacity:.45;"></div>
+    </div>
+    <div class="container">
+      <div class="section-header fade-up" style="text-align:center;">
+        <span class="tag tag-pill" style="color:rgba(255,255,255,.8);background:rgba(255,255,255,.1);">Síguenos</span>
+        <h2 class="section-title" style="color:white;">Conecta con Plus Vet<br>en redes sociales</h2>
+        <p class="section-subtitle" style="color:rgba(255,255,255,.5);margin:0 auto;">Contenido útil, tips de salud animal y el día a día de nuestra clínica. Estamos donde tú estás.</p>
+      </div>
+
+      <div class="social-grid">
+
+        <div class="social-card fade-up d1">
+          <div class="sc-icon ig"><i class="fa-brands fa-instagram"></i></div>
+          <div class="sc-network">Instagram</div>
+          <div class="sc-name">@pplusvet</div>
+          <p class="sc-desc">Fotos del día a día, casos clínicos y tips de cuidado para tu perro o gato.</p>
+          <a href="https://www.instagram.com/pplusvet/" target="_blank" rel="noopener" class="sc-btn">
+            <i class="fa-brands fa-instagram"></i> Seguir
+          </a>
+        </div>
+
+        <div class="social-card fade-up d2">
+          <div class="sc-icon fb"><i class="fa-brands fa-facebook-f"></i></div>
+          <div class="sc-network">Facebook</div>
+          <div class="sc-name">pplusvet</div>
+          <p class="sc-desc">Noticias de la clínica, artículos de salud animal y novedades del equipo médico.</p>
+          <a href="https://www.facebook.com/pplusvet" target="_blank" rel="noopener" class="sc-btn">
+            <i class="fa-brands fa-facebook-f"></i> Seguir
+          </a>
+        </div>
+
+        <div class="social-card fade-up d3">
+          <div class="sc-icon tt"><i class="fa-brands fa-tiktok"></i></div>
+          <div class="sc-network">TikTok</div>
+          <div class="sc-name">@pplusvet</div>
+          <p class="sc-desc">Videos cortos con consejos, procedimientos y momentos especiales de la clínica.</p>
+          <a href="https://www.tiktok.com/@pplusvet" target="_blank" rel="noopener" class="sc-btn">
+            <i class="fa-brands fa-tiktok"></i> Seguir
+          </a>
+        </div>
+
+        <div class="social-card fade-up d4">
+          <div class="sc-icon wa"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="sc-network">WhatsApp</div>
+          <div class="sc-name">+57 322 529 2764</div>
+          <p class="sc-desc">Escríbenos directamente para agendar una cita, consultar o resolver cualquier duda.</p>
+          <a href="https://wa.me/573225292764" target="_blank" rel="noopener" class="sc-btn">
+            <i class="fa-brands fa-whatsapp"></i> Escribir
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Multi-channel floating button -->
+  <div class="multichannel" id="multichannel">
+    <div class="mc-items hidden" id="mcItems">
+
+      <div class="mc-item">
+        <span class="mc-label">Llamar</span>
+        <a href="tel:+573225292764" class="mc-btn ph">
+          <i class="fa-solid fa-phone"></i>
+        </a>
+      </div>
+      <div class="mc-item">
+        <span class="mc-label">TikTok</span>
+        <a href="https://www.tiktok.com/@pplusvet" target="_blank" rel="noopener" class="mc-btn tt">
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
+      <div class="mc-item">
+        <span class="mc-label">Facebook</span>
+        <a href="https://www.facebook.com/pplusvet" target="_blank" rel="noopener" class="mc-btn fb">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+      </div>
+      <div class="mc-item">
+        <span class="mc-label">Instagram</span>
+        <a href="https://www.instagram.com/pplusvet/" target="_blank" rel="noopener" class="mc-btn ig">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
+      <div class="mc-item">
+        <span class="mc-label">WhatsApp</span>
+        <a href="https://wa.me/573225292764" target="_blank" rel="noopener" class="mc-btn wa">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+
+    </div>
+    <button class="mc-main" id="mcMain" onclick="toggleMultichannel()" title="Contactar">
+      <i class="fa-brands fa-whatsapp mc-open"></i>
+      <i class="fa-solid fa-xmark mc-close"></i>
+    </button>
+  </div>
 
 
   <!-- ================================================================
@@ -2121,6 +2338,19 @@
       const popover = document.getElementById('callPopover');
       if (popover && wrap && !wrap.contains(e.target)) {
         popover.classList.remove('open');
+      }
+    });
+
+    // --- Multi-channel float ---
+    function toggleMultichannel() {
+      document.getElementById('mcItems').classList.toggle('hidden');
+      document.getElementById('mcMain').classList.toggle('open');
+    }
+    document.addEventListener('click', e => {
+      const mc = document.getElementById('multichannel');
+      if (mc && !mc.contains(e.target)) {
+        document.getElementById('mcItems').classList.add('hidden');
+        document.getElementById('mcMain').classList.remove('open');
       }
     });
 
