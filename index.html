@@ -748,38 +748,57 @@
       box-shadow: var(--shadow-md);
     }
 
-    .testi-stars  { color: var(--orange); font-size: 13px; margin-bottom: 6px; letter-spacing: 2px; }
-    .testi-quote  {
-      font-size: 48px;
-      line-height: .8;
-      color: var(--teal);
-      font-family: Georgia, serif;
-      margin-bottom: 12px;
-    }
-    .testi-text   { font-size: 14.5px; font-weight: 300; color: var(--dark); line-height: 1.75; margin-bottom: 24px; }
+    .testi-text   { font-size: 14px; font-weight: 400; color: var(--dark); line-height: 1.75; margin-bottom: 20px; flex: 1; }
     .testi-author { display: flex; align-items: center; gap: 12px; }
     .testi-avatar {
-      width: 46px; height: 46px;
+      width: 42px; height: 42px;
       border-radius: 50%;
       background: var(--gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 800;
-      font-size: 17px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 800; font-size: 16px; flex-shrink: 0;
     }
     .testi-name { font-size: 13.5px; font-weight: 700; }
-    .testi-meta { font-size: 12px; color: var(--gray); }
 
-    .testi-note {
-      text-align: center;
-      margin-top: 36px;
-      font-size: 13px;
-      color: var(--gray);
-      font-style: italic;
+    /* Google review card styles */
+    .testi-card { display: flex; flex-direction: column; }
+    .testi-g-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 14px;
     }
+    .testi-g-stars { color: #FBBC04; font-size: 16px; letter-spacing: 1px; line-height: 1; }
+    .testi-g-logo  {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; color: #5f6368;
+      flex-shrink: 0;
+    }
+    .local-guide-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 11px; font-weight: 700; color: #4285F4;
+    }
+    .local-guide-badge i { font-size: 10px; }
+    .testi-review-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 3px; }
+    .testi-review-stats { font-size: 11px; color: var(--gray); }
+
+    /* Placeholder card */
+    .testi-card-ph {
+      border: 2px dashed rgba(0,0,0,.1);
+      background: rgba(0,0,0,.015);
+    }
+    .testi-card-ph .testi-ph-inner {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 10px; padding: 20px 0; flex: 1;
+      color: rgba(0,0,0,.3); text-align: center;
+    }
+    .testi-card-ph .testi-ph-inner i { font-size: 28px; }
+    .testi-card-ph .testi-ph-inner p { font-size: 13px; line-height: 1.5; }
+
+    .testi-g-note {
+      text-align: center; margin-top: 36px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 13px; color: var(--gray);
+    }
+    .testi-g-note a { color: var(--teal); font-weight: 600; text-decoration: none; }
+    .testi-g-note a:hover { text-decoration: underline; }
 
     /* ============================================================
        GALLERY
@@ -1856,47 +1875,70 @@
 
       <div class="testi-grid">
 
+        <!-- Reseña real #1 -->
         <div class="testi-card fade-up d1">
-          <div class="testi-stars">★★★★★</div>
-          <div class="testi-quote">"</div>
-          <p class="testi-text">Excelente atención, el equipo médico es muy profesional y se nota el amor que le tienen a los animales. Mi perrita salió de cirugía perfectamente y el seguimiento postoperatorio fue impecable.</p>
+          <div class="testi-g-header">
+            <div class="testi-g-stars">★★★★★</div>
+            <div class="testi-g-logo">
+              <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84-.18-.68z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Google
+            </div>
+          </div>
+          <p class="testi-text">Buen servicio 🐕‍🦺🐕‍🦺 veterinario y en todas las especiales para sus mascotas 🐹🐕</p>
           <div class="testi-author">
-            <div class="testi-avatar">M</div>
+            <div class="testi-avatar" style="background: linear-gradient(135deg,#4285F4,#34A853);">J</div>
             <div>
-              <div class="testi-name">María Fernanda G.</div>
-              <div class="testi-meta">Mamá de Luna 🐕</div>
+              <div class="testi-name">José Albeiro Valencia Ramírez</div>
+              <div class="testi-review-meta">
+                <span class="local-guide-badge"><i class="fa-solid fa-shield-halved"></i> Guía Local</span>
+                <span class="testi-review-stats">· 140 opiniones · 46 fotos</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="testi-card fade-up d2">
-          <div class="testi-stars">★★★★★</div>
-          <div class="testi-quote">"</div>
-          <p class="testi-text">Llevar a Milo fue la mejor decisión que tomé. Las instalaciones son modernas, el diagnóstico fue rápido y el tratamiento muy acertado. En poco tiempo recuperó su energía completamente.</p>
-          <div class="testi-author">
-            <div class="testi-avatar">C</div>
-            <div>
-              <div class="testi-name">Carlos A. R.</div>
-              <div class="testi-meta">Papá de Milo 🐈</div>
+        <!-- Placeholder #2 -->
+        <div class="testi-card testi-card-ph fade-up d2">
+          <div class="testi-g-header">
+            <div class="testi-g-stars" style="color:rgba(0,0,0,.12);">★★★★★</div>
+            <div class="testi-g-logo" style="opacity:.2;">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#ccc" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#ccc" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#ccc" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84-.18-.68z"/><path fill="#ccc" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Google
             </div>
+          </div>
+          <div class="testi-ph-inner">
+            <i class="fa-brands fa-google"></i>
+            <p>Próxima reseña<br>de Google</p>
           </div>
         </div>
 
-        <div class="testi-card fade-up d3">
-          <div class="testi-stars">★★★★★</div>
-          <div class="testi-quote">"</div>
-          <p class="testi-text">Gracias a la hospitalización 24 horas pudimos atender una emergencia nocturna de nuestro gato. El personal de turno fue muy cálido y eficiente. Quedamos muy tranquilos con el servicio.</p>
-          <div class="testi-author">
-            <div class="testi-avatar">A</div>
-            <div>
-              <div class="testi-name">Andrea V.</div>
-              <div class="testi-meta">Mamá de Simba 🐈</div>
+        <!-- Placeholder #3 -->
+        <div class="testi-card testi-card-ph fade-up d3">
+          <div class="testi-g-header">
+            <div class="testi-g-stars" style="color:rgba(0,0,0,.12);">★★★★★</div>
+            <div class="testi-g-logo" style="opacity:.2;">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#ccc" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#ccc" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#ccc" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84-.18-.68z"/><path fill="#ccc" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Google
             </div>
+          </div>
+          <div class="testi-ph-inner">
+            <i class="fa-brands fa-google"></i>
+            <p>Próxima reseña<br>de Google</p>
           </div>
         </div>
 
       </div>
-      <p class="testi-note fade-up">* Testimonios de ejemplo — reemplazar con reseñas reales de clientes.</p>
+
+      <div class="testi-g-note fade-up">
+        <svg viewBox="0 0 24 24" width="15" height="15"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84-.18-.68z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Opiniones verificadas en Google Maps ·
+        <a href="https://www.google.com/maps/place/Plus+Vet+Cl%C3%ADnica+veterinaria" target="_blank" rel="noopener">Ver todas las reseñas</a>
+      </div>
     </div>
   </section>
 
