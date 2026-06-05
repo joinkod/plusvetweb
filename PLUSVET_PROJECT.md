@@ -2,7 +2,7 @@
 
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
-> **Estado:** En desarrollo — v1.5 activo en Vercel  
+> **Estado:** En desarrollo — v1.6 activo en Vercel  
 > **Última actualización:** Junio 2026
 
 ---
@@ -125,7 +125,7 @@ Cardiología, Dermatología, Neurología, Oftalmología, Ortopedia, Oncología a
 | 5 | Tecnología y Quirófano | `#tecnologia` | ✅ Completo                     |
 | 6 | Testimonios          | `#testimonios` | ✅ Completo (reseñas reales de Google) |
 | 7 | Galería              | `#galeria`     | ✅ Estructura (faltan fotos)     |
-| 8 | Blog                 | `#blog`        | ✅ "Próximamente"                |
+| 8 | Blog                 | `#blog`        | ✅ CMS activo — tarjetas dinámicas, fallback "Próximamente" |
 | 9 | Comunidad            | `#comunidad`   | ✅ Completo                      |
 | 10 | Contacto / Formulario| `#contacto`   | ✅ Completo                      |
 | — | Footer               | —              | ✅ Completo                      |
@@ -218,11 +218,13 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 |----------------|--------------------------------------------------------------|
 | HTML5          | Estructura semántica, single file                            |
 | CSS3           | Variables, Grid, Flexbox, animaciones, mask-image            |
-| JavaScript     | Vanilla JS — scroll, menú, reveal, form, popover, multi-canal |
+| JavaScript     | Vanilla JS — scroll, menú, reveal, form, popover, multi-canal, blog loader |
 | Google Fonts   | Poppins — cargado vía CDN                                    |
 | Font Awesome   | v6.5 — íconos vía CDN                                        |
 | Unsplash CDN   | Imágenes de fondo Ken Burns (hotlink permitido)              |
 | Google Maps    | Embed iframe (sin API key)                                   |
+| marked.js      | Renderizado de Markdown en `post.html` (CDN jsDelivr)        |
+| Decap CMS      | v3.x — panel de administración en `/admin/`                  |
 | Sin frameworks | No React, no Vue, no dependencias de build                   |
 
 ---
@@ -246,10 +248,12 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 ### 🟢 Opcionales / Futuros
 - [ ] Confirmar nombre/descripción del servicio "Esquimiatría"
 - [ ] Lista definitiva de especialistas en convenio
-- [ ] Activar blog con primeros artículos
+- [x] Sistema de blog con CMS → Decap CMS activo (falta publicar primeros artículos)
+- [ ] Publicar primeros artículos en el blog
 - [ ] Integrar formulario con backend (EmailJS, Formspree, etc.)
 - [ ] SEO: meta tags Open Graph para redes sociales
 - [ ] Dominio personalizado (configurar en Vercel → Settings → Domains)
+- [ ] Migración de Vercel a hosting/dominio propio
 
 ---
 
@@ -258,8 +262,15 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 ```
 plusvetweb/
 ├── index.html                          # Página principal
+├── post.html                           # Template universal de artículos del blog
 ├── vercel.json                         # Configuración de despliegue
+├── .gitignore                          # Excluye node_modules, lock files, OS files
 ├── PLUSVET_PROJECT.md                  # Este documento
+├── admin/
+│   ├── index.html                      # Panel Decap CMS
+│   └── config.yml                      # Configuración CMS (backend GitHub + Netlify OAuth)
+├── posts/
+│   └── index.json                      # Índice de posts (generado/actualizado al publicar)
 └── assets/
     ├── plusvet-horizontal-fullcolor.svg
     ├── plusvet-horizontal-blanco.svg
@@ -267,10 +278,12 @@ plusvetweb/
     ├── plusvet-vertical-fullcolor.svg
     ├── plusvet-vertical-blanco.svg
     ├── icon-source.svg                 # Favicon SVG (cruz + gradiente)
-    └── apple-touch-icon.png            # Ícono iOS 180×180px
+    ├── apple-touch-icon.png            # Ícono iOS 180×180px
+    └── img/
+        └── blog/                       # Imágenes de portada de artículos (subidas por CMS)
 ```
 
-> 📁 **Al agregar fotos**, crear subcarpeta `assets/img/` y referenciarlas desde el HTML.
+> 📁 **Al agregar fotos del sitio**, crear subcarpeta `assets/img/` y referenciarlas desde el HTML.
 
 ---
 
@@ -286,9 +299,9 @@ plusvetweb/
 - **Trigger:** Automático en cada push a `main`
 - **Estado:** ✅ Activo y desplegado
 
-### Flujo de trabajo
+### Flujo de trabajo — código
 ```
-Claude Code (local) ──► edita index.html / assets
+Claude Code (local) ──► edita index.html / assets / post.html
                                     │
                              git push origin main
                                     │
@@ -298,6 +311,31 @@ Claude Code (local) ──► edita index.html / assets
                                     ▼
                         Vercel (deploy automático)
 ```
+
+### Flujo de trabajo — blog (CMS)
+```
+Editor entra a /admin/  →  autenticación GitHub OAuth (proxy Netlify)
+                                    │
+                             crea/edita artículo
+                                    │
+                                    ▼
+                Decap CMS hace commit en GitHub (rama main)
+                → crea posts/YYYY-MM-DD-slug.md
+                → actualiza posts/index.json
+                                    │
+                                    ▼
+                        Vercel detecta push → redeploy automático
+```
+
+### Autenticación CMS (Decap CMS)
+- **Backend:** GitHub — commits directamente al repo
+- **OAuth proxy:** Netlify (hosting-agnóstico, funciona con cualquier servidor)
+- **GitHub OAuth App:**
+  - Client ID: `Ov23lir1ajC445tICcGj` (en `admin/config.yml`)
+  - Client Secret: ⚠️ **SOLO en Netlify dashboard** — jamás en el repositorio
+  - Callback URL registrada: `https://api.netlify.com/auth/done`
+- **Configurar en Netlify:** Site → Site configuration → Access control → OAuth → GitHub
+- **Panel de administración:** `https://[dominio]/admin/`
 
 ### Cómo iniciar una nueva sesión en Claude Code
 Al inicio de cada conversación escribir:
@@ -315,6 +353,7 @@ Al inicio de cada conversación escribir:
 | v1.3    | Mayo 2026  | Ken Burns en 6 secciones, fade suave entre secciones, fondos unificados, favicon SVG + PNG        |
 | v1.4    | Junio 2026 | Google Maps con tarjeta flotante, sección Comunidad, botón multi-canal flotante, botón ir arriba  |
 | v1.5    | Junio 2026 | Testimonios con reseñas reales de Google, badge Local Guide oficial, link a panel de reseñas      |
+| v1.6    | Junio 2026 | Sistema de blog completo: Decap CMS, post.html, tarjetas dinámicas en index, posts/index.json     |
 
 ---
 
@@ -333,6 +372,16 @@ Al inicio de cada conversación escribir:
 ### Imágenes de fondo animadas (Ken Burns)
 - **Problema:** Pexels, Coverr y Pixabay bloquean hotlinking. Solo Unsplash CDN permite uso directo.
 - **Transiciones suaves:** Unificar `background-color` de secciones adyacentes a `var(--white)` elimina el corte de color.
+
+### Blog CMS — Decap CMS con GitHub backend
+- **Decisión:** Decap CMS (antes Netlify CMS) como panel de administración de contenido.
+- **Razón:** El cliente necesita publicar artículos de forma independiente, sin tocar código.
+- **Backend GitHub:** los posts se guardan como archivos `.md` con frontmatter YAML directamente en el repositorio (`posts/YYYY-MM-DD-slug.md`). El CMS hace commits automáticamente.
+- **OAuth proxy Netlify:** Netlify actúa solo como intermediario de autenticación OAuth de GitHub. No requiere hospedar el sitio en Netlify — funciona con cualquier hosting (Vercel, cPanel, etc.).
+- **Renderizado client-side:** `post.html` usa `marked.js` para parsear el Markdown en el navegador. No hay build step.
+- **Índice de posts:** `posts/index.json` es un array de metadatos. El blog en `index.html` lo lee via `fetch()` y renderiza tarjetas. Si está vacío, muestra el placeholder "Próximamente".
+- **Secret nunca en repo:** el Client Secret de GitHub OAuth App va únicamente en el dashboard de Netlify (Site configuration → Access control → OAuth). El Client ID sí puede estar en `admin/config.yml`.
+- **Resiliencia a migración de hosting:** cambiar de Vercel a otro proveedor no afecta el CMS porque la autenticación pasa por Netlify, no por el hosting del sitio.
 
 ### Stacking cards — EXPLORADO Y DESCARTADO
 - `position: sticky; top: 0` + `animation-timeline: view()` es incompatible con secciones más altas que el viewport.
