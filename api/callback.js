@@ -2,7 +2,7 @@ module.exports = async function handler(req, res) {
   const { code, error } = req.query;
 
   if (error || !code) {
-    return respond(res, 'error', { error: error || 'no_code' });
+    return respond(res, 'error', { error: error || 'no_code' }, 'Sin código de autorización');
   }
 
   try {
@@ -22,42 +22,35 @@ module.exports = async function handler(req, res) {
     const data = await tokenRes.json();
 
     if (data.access_token) {
-      return respond(res, 'success', { token: data.access_token, provider: 'github' });
+      return respond(res, 'success', { token: data.access_token, provider: 'github' }, 'Token obtenido OK');
     } else {
-      return respond(res, 'error', data);
+      return respond(res, 'error', data, 'GitHub rechazó el token: ' + JSON.stringify(data));
     }
   } catch (err) {
-    return respond(res, 'error', { error: err.message });
+    return respond(res, 'error', { error: err.message }, 'Error de red: ' + err.message);
   }
 };
 
-function respond(res, status, content) {
+function respond(res, status, content, debug) {
   const message = `authorization:github:${status}:${JSON.stringify(content)}`;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.end(`<!DOCTYPE html>
 <html>
-<head><title>Autenticando...</title></head>
-<body>
-<p id="msg">Completando autenticación...</p>
+<head><title>Auth</title></head>
+<body style="font-family:sans-serif;padding:20px">
+<p id="info">Estado: <b>${status}</b> — ${debug}</p>
+<p id="opener-state">Comprobando opener...</p>
 <script>
   (function() {
     var msg = ${JSON.stringify(message)};
-    var sent = false;
-    function send() {
-      if (sent) return;
-      if (window.opener) {
-        sent = true;
-        window.opener.postMessage(msg, '*');
-        setTimeout(function() { window.close(); }, 500);
-      } else {
-        document.getElementById('msg').textContent =
-          'Error: window.opener no disponible. Cierra esta ventana e intenta de nuevo.';
-        console.error('opener null, message was:', msg);
-      }
+    var openerEl = document.getElementById('opener-state');
+    if (window.opener) {
+      openerEl.textContent = 'window.opener: OK — enviando mensaje al CMS...';
+      window.opener.postMessage(msg, '*');
+      setTimeout(function() { window.close(); }, 1500);
+    } else {
+      openerEl.textContent = 'window.opener: NULL — no se puede enviar mensaje. Deja esta ventana abierta.';
     }
-    // try immediately, then retry once in case of timing
-    send();
-    setTimeout(send, 300);
   })();
 </script>
 </body>
