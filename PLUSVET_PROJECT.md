@@ -3,7 +3,7 @@
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
 > **Estado:** En desarrollo — v1.7 activo en Vercel  
-> **Última actualización:** Junio 2026
+> **Última actualización:** Junio 2026 (sesión 3 — autenticación CMS en depuración)
 
 ---
 
@@ -263,14 +263,17 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 plusvetweb/
 ├── index.html                          # Página principal
 ├── post.html                           # Template universal de artículos del blog
-├── vercel.json                         # Configuración de despliegue
+├── vercel.json                         # Configuración de despliegue (rutas, cero builds explícitos)
 ├── .gitignore                          # Excluye node_modules, lock files, OS files
 ├── PLUSVET_PROJECT.md                  # Este documento
+├── api/
+│   ├── auth.js                         # Serverless: redirige al flujo OAuth de GitHub
+│   └── callback.js                     # Serverless: intercambia code por token, hace postMessage
 ├── admin/
-│   ├── index.html                      # Panel Decap CMS
-│   └── config.yml                      # Configuración CMS (backend GitHub + Netlify OAuth)
+│   ├── index.html                      # Panel Decap CMS (con shim de autenticación)
+│   └── config.yml                      # Config CMS: backend github, base_url Vercel
 ├── posts/
-│   └── index.json                      # Índice de posts (generado/actualizado al publicar)
+│   └── index.json                      # Índice de posts (vacío hasta primer artículo)
 └── assets/
     ├── plusvet-horizontal-fullcolor.svg
     ├── plusvet-horizontal-blanco.svg
@@ -314,7 +317,7 @@ Claude Code (local) ──► edita index.html / assets / post.html
 
 ### Flujo de trabajo — blog (CMS)
 ```
-Editor entra a /admin/  →  autenticación GitHub OAuth (proxy Netlify)
+Editor entra a /admin/  →  autenticación GitHub OAuth (proxy Vercel serverless)
                                     │
                              crea/edita artículo
                                     │
@@ -328,26 +331,68 @@ Editor entra a /admin/  →  autenticación GitHub OAuth (proxy Netlify)
 ```
 
 ### Autenticación CMS (Decap CMS) — EN DEPURACIÓN
+
 - **Backend:** GitHub — commits directamente al repo
-- **Proxy OAuth actual:** Vercel serverless functions (`api/auth.js` + `api/callback.js`)
-  - El token se intercambia server-side; `GITHUB_CLIENT_SECRET` en variables de entorno de Vercel
-  - `GITHUB_CLIENT_ID` y `GITHUB_CLIENT_SECRET` configurados en Vercel → Environment Variables
+- **Proxy OAuth:** Vercel serverless functions (`api/auth.js` + `api/callback.js`)
+  - `api/auth.js` — redirige al flujo OAuth de GitHub
+  - `api/callback.js` — intercambia el code por un token y hace `postMessage` al opener
+  - `GITHUB_CLIENT_SECRET` **SOLO** en variables de entorno de Vercel — jamás en el repo
+  - `GITHUB_CLIENT_ID` y `GITHUB_CLIENT_SECRET` en Vercel → Settings → Environment Variables
 - **GitHub OAuth App:**
   - Client ID: `Ov23lir1ajC445tICcGj` (en `admin/config.yml`)
-  - Client Secret: ⚠️ **SOLO en variables de entorno de Vercel** — jamás en el repositorio
+  - Client Secret: ⚠️ **NUNCA en el repositorio**
   - Callback URL registrada: `https://plusvetweb.vercel.app/api/callback`
-- **Estado actual:** El proxy funciona (token obtenido), el mensaje llega al CMS, pero Decap CMS no completa el login — en investigación
-- **Intentos previos descartados:**
-  - Netlify como proxy OAuth → "Not Found" porque el site en Netlify es estático
-  - PKCE auth → GitHub OAuth Apps no soportan PKCE puro sin server
-  - `base_url: https://api.netlify.com` → no funciona sin que el dominio esté registrado en Netlify
-- **Tokens expuestos en sesión de debug:** ⚠️ Revocar todos los tokens `gho_*` en GitHub → Settings → Applications → Authorized OAuth Apps
+- **Versiones cargadas:** decap-cms 3.1.2 / decap-cms-core 3.3.2
+
+#### Estado de la depuración (Junio 2026)
+
+| Paso | Estado | Detalle |
+|------|--------|---------|
+| Popup OAuth se abre | ✅ | Abre `plusvetweb.vercel.app/api/auth` → redirige a GitHub |
+| Usuario autoriza en GitHub | ✅ | Flujo normal de OAuth |
+| Server intercambia code → token | ✅ | `api/callback.js` obtiene token válido (200 de GitHub API) |
+| Popup envía `postMessage` al opener | ✅ | `window.opener.postMessage(msg, '*')` ejecuta OK |
+| Mensaje llega al admin window | ✅ | Confirmado: los 3 listeners de la página se disparan |
+| Decap CMS procesa el mensaje | ❌ | No ocurre — no hay llamadas a GitHub API, no hay error |
+| Dashboard del CMS aparece | ❌ | Se queda en la pantalla de login |
+
+#### Hipótesis investigadas
+
+1. **`e.source !== authWindow`** (principal sospechosa): Decap CMS puede rechazar el mensaje si compara la referencia de la ventana popup con la que tiene almacenada. Se probó redespachando como `MessageEvent` sintético (`source: null`) → parecía funcionar en versión debug, pero en versión limpia no. Diagnóstico inconcluso.
+2. **Mismatch de origin**: `e.origin` y `config.base_url` deberían ser ambos `https://plusvetweb.vercel.app`. No descartado hasta ver logs.
+3. **Timing**: el mensaje podría llegar antes de que Decap CMS inicialice su listener interno. El shim re-despacha 500ms después como mitigación.
+
+#### Estado actual del código
+
+- `admin/index.html` — versión de diagnóstico con:
+  - Interceptor de `window.open` (muestra URL del popup)
+  - Interceptor de `window.addEventListener` (muestra qué listener se dispara y con qué `origin`/`source`)
+  - Shim: captura el mensaje real → re-despacha como sintético `source: null` en 500ms
+- `api/callback.js` — versión limpia que muestra "OK — token enviado" en el popup
+- **Próximo paso:** Ejecutar la prueba y analizar los logs `[AUTH]` para confirmar/descartar `e.origin` como causa, y verificar si el listener de Decap CMS procesa el sintético.
+
+#### Tokens expuestos en sesión de debug — REVOCAR
+⚠️ Varios tokens `gho_*` quedaron visibles en la consola durante el debug. Ir a:
+GitHub → Settings → Developer settings → OAuth Apps → Plus Vet → **Revoke all user tokens**
+
 - **Panel de administración:** `https://plusvetweb.vercel.app/admin/`
-- **Versiones cargadas:** decap-cms 3.1.2, decap-cms-core 3.3.2
+
+#### Intentos previos descartados
+- Netlify como proxy OAuth → "Not Found" / "PAGE NOT FOUND" (el site de Netlify es estático, no tiene endpoint `/auth`)
+- PKCE auth → GitHub OAuth Apps no soportan PKCE puro sin client secret
+- `base_url: https://api.netlify.com` → requiere dominio registrado en Netlify
 
 ### Cómo iniciar una nueva sesión en Claude Code
 Al inicio de cada conversación escribir:
 > *"Lee el archivo `PLUSVET_PROJECT.md` y úsalo como contexto para continuar trabajando en este proyecto."*
+
+### Próximo paso al retomar (Junio 2026)
+El código actual en `admin/index.html` tiene los interceptores de debug activos. Al retomar:
+1. Abrir `https://plusvetweb.vercel.app/admin/` con DevTools → Console
+2. Hacer clic en "Iniciar sesión con GitHub" y completar el flujo OAuth
+3. Copiar toda la salida `[AUTH]` de la consola y compartirla
+4. Con esa información identificar si el problema es `e.origin`, `e.source`, timing, u otro
+5. Una vez resuelto, limpiar el debug de `admin/index.html` y hacer push final
 
 ---
 
@@ -363,6 +408,7 @@ Al inicio de cada conversación escribir:
 | v1.5    | Junio 2026 | Testimonios con reseñas reales de Google, badge Local Guide oficial, link a panel de reseñas      |
 | v1.6    | Junio 2026 | Sistema de blog completo: Decap CMS, post.html, tarjetas dinámicas en index, posts/index.json     |
 | v1.7    | Junio 2026 | Proxy OAuth en Vercel (api/auth.js + api/callback.js); autenticación CMS en depuración            |
+| v1.7.1  | Junio 2026 | Debug dirigido: interceptores de window.open + addEventListener + shim sintético source=null       |
 
 ---
 
@@ -386,11 +432,11 @@ Al inicio de cada conversación escribir:
 - **Decisión:** Decap CMS (antes Netlify CMS) como panel de administración de contenido.
 - **Razón:** El cliente necesita publicar artículos de forma independiente, sin tocar código.
 - **Backend GitHub:** los posts se guardan como archivos `.md` con frontmatter YAML directamente en el repositorio (`posts/YYYY-MM-DD-slug.md`). El CMS hace commits automáticamente.
-- **OAuth proxy Netlify:** Netlify actúa solo como intermediario de autenticación OAuth de GitHub. No requiere hospedar el sitio en Netlify — funciona con cualquier hosting (Vercel, cPanel, etc.).
+- **OAuth proxy en Vercel:** `api/auth.js` y `api/callback.js` son funciones serverless en el mismo repo que actúan de proxy OAuth. El intercambio de code → token ocurre server-side, el `GITHUB_CLIENT_SECRET` nunca toca el navegador ni el código del repo.
 - **Renderizado client-side:** `post.html` usa `marked.js` para parsear el Markdown en el navegador. No hay build step.
 - **Índice de posts:** `posts/index.json` es un array de metadatos. El blog en `index.html` lo lee via `fetch()` y renderiza tarjetas. Si está vacío, muestra el placeholder "Próximamente".
-- **Secret nunca en repo:** el Client Secret de GitHub OAuth App va únicamente en el dashboard de Netlify (Site configuration → Access control → OAuth). El Client ID sí puede estar en `admin/config.yml`.
-- **Resiliencia a migración de hosting:** cambiar de Vercel a otro proveedor no afecta el CMS porque la autenticación pasa por Netlify, no por el hosting del sitio.
+- **Secret nunca en repo:** `GITHUB_CLIENT_SECRET` va únicamente en Vercel → Environment Variables. El `GITHUB_CLIENT_ID` sí puede estar en `admin/config.yml`.
+- **vercel.json sin sección `builds`:** La auto-detección zero-config de Vercel es la que detecta los archivos en `/api/` como serverless functions. Agregar una sección `builds` explícita rompe el routing — no hacerlo.
 
 ### Stacking cards — EXPLORADO Y DESCARTADO
 - `position: sticky; top: 0` + `animation-timeline: view()` es incompatible con secciones más altas que el viewport.
