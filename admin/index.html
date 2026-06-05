@@ -23,7 +23,16 @@
         console.log('[CMS DEBUG] message listener registered');
         var wrapped = function(e) {
           console.log('[CMS DEBUG] message listener fired — origin:', e.origin, '— data:', typeof e.data === 'string' ? e.data.slice(0, 80) : typeof e.data);
-          return fn.apply(this, arguments);
+          try {
+            var r = fn.apply(this, arguments);
+            if (r && typeof r.then === 'function') {
+              r.catch(function(err) { console.error('[CMS DEBUG] handler promise rejected:', err); });
+            }
+            return r;
+          } catch(err) {
+            console.error('[CMS DEBUG] handler threw synchronously:', err);
+            throw err;
+          }
         };
         return _addEL(type, wrapped, opts);
       }
@@ -49,6 +58,6 @@
       console.error('[CMS DEBUG] Unhandled rejection:', e.reason);
     });
   </script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script src="https://unpkg.com/decap-cms@3.1.2/dist/decap-cms.js"></script>
 </body>
 </html>
