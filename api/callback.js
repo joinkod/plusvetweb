@@ -22,7 +22,13 @@ module.exports = async function handler(req, res) {
     const data = await tokenRes.json();
 
     if (data.access_token) {
-      return respond(res, 'success', { token: data.access_token, provider: 'github' }, 'Token obtenido OK');
+      // Verify which GitHub account owns this token
+      const userRes = await fetch('https://api.github.com/user', {
+        headers: { Authorization: `token ${data.access_token}`, 'User-Agent': 'plusvet-cms' }
+      });
+      const userData = await userRes.json();
+      const debugInfo = `Token OK — cuenta GitHub: ${userData.login || 'desconocida'}`;
+      return respond(res, 'success', { token: data.access_token, provider: 'github' }, debugInfo);
     } else {
       return respond(res, 'error', data, 'GitHub rechazó el token: ' + JSON.stringify(data));
     }
