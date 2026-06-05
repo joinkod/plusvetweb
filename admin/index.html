@@ -7,7 +7,7 @@
 </head>
 <body>
   <script>
-    // Intercept window.open to log the exact auth URL
+    // Intercept window.open
     var _open = window.open;
     window.open = function(url, name, features) {
       if (url && typeof url === 'string' && url.includes('auth')) {
@@ -16,7 +16,7 @@
       return _open.apply(this, arguments);
     };
 
-    // Intercept addEventListener to track message listeners
+    // Intercept addEventListener
     var _addEL = window.addEventListener.bind(window);
     window.addEventListener = function(type, fn, opts) {
       if (type === 'message') {
@@ -29,6 +29,25 @@
       }
       return _addEL(type, fn, opts);
     };
+
+    // Intercept fetch to see ALL network calls
+    var _fetch = window.fetch;
+    window.fetch = function(input, opts) {
+      var url = typeof input === 'string' ? input : (input && input.url) || String(input);
+      console.log('[CMS DEBUG] fetch →', url.slice(0, 120));
+      return _fetch.apply(this, arguments).then(function(res) {
+        console.log('[CMS DEBUG] fetch ←', res.status, url.slice(0, 80));
+        return res;
+      }, function(err) {
+        console.error('[CMS DEBUG] fetch ERROR', url.slice(0, 80), err);
+        throw err;
+      });
+    };
+
+    // Catch unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('[CMS DEBUG] Unhandled rejection:', e.reason);
+    });
   </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
