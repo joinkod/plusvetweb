@@ -2,7 +2,7 @@
 
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
-> **Estado:** En desarrollo — v1.6 activo en Vercel  
+> **Estado:** En desarrollo — v1.7 activo en Vercel  
 > **Última actualización:** Junio 2026
 
 ---
@@ -327,15 +327,23 @@ Editor entra a /admin/  →  autenticación GitHub OAuth (proxy Netlify)
                         Vercel detecta push → redeploy automático
 ```
 
-### Autenticación CMS (Decap CMS)
+### Autenticación CMS (Decap CMS) — EN DEPURACIÓN
 - **Backend:** GitHub — commits directamente al repo
-- **OAuth proxy:** Netlify (hosting-agnóstico, funciona con cualquier servidor)
+- **Proxy OAuth actual:** Vercel serverless functions (`api/auth.js` + `api/callback.js`)
+  - El token se intercambia server-side; `GITHUB_CLIENT_SECRET` en variables de entorno de Vercel
+  - `GITHUB_CLIENT_ID` y `GITHUB_CLIENT_SECRET` configurados en Vercel → Environment Variables
 - **GitHub OAuth App:**
   - Client ID: `Ov23lir1ajC445tICcGj` (en `admin/config.yml`)
-  - Client Secret: ⚠️ **SOLO en Netlify dashboard** — jamás en el repositorio
-  - Callback URL registrada: `https://api.netlify.com/auth/done`
-- **Configurar en Netlify:** Site → Site configuration → Access control → OAuth → GitHub
-- **Panel de administración:** `https://[dominio]/admin/`
+  - Client Secret: ⚠️ **SOLO en variables de entorno de Vercel** — jamás en el repositorio
+  - Callback URL registrada: `https://plusvetweb.vercel.app/api/callback`
+- **Estado actual:** El proxy funciona (token obtenido), el mensaje llega al CMS, pero Decap CMS no completa el login — en investigación
+- **Intentos previos descartados:**
+  - Netlify como proxy OAuth → "Not Found" porque el site en Netlify es estático
+  - PKCE auth → GitHub OAuth Apps no soportan PKCE puro sin server
+  - `base_url: https://api.netlify.com` → no funciona sin que el dominio esté registrado en Netlify
+- **Tokens expuestos en sesión de debug:** ⚠️ Revocar todos los tokens `gho_*` en GitHub → Settings → Applications → Authorized OAuth Apps
+- **Panel de administración:** `https://plusvetweb.vercel.app/admin/`
+- **Versiones cargadas:** decap-cms 3.1.2, decap-cms-core 3.3.2
 
 ### Cómo iniciar una nueva sesión en Claude Code
 Al inicio de cada conversación escribir:
@@ -354,6 +362,7 @@ Al inicio de cada conversación escribir:
 | v1.4    | Junio 2026 | Google Maps con tarjeta flotante, sección Comunidad, botón multi-canal flotante, botón ir arriba  |
 | v1.5    | Junio 2026 | Testimonios con reseñas reales de Google, badge Local Guide oficial, link a panel de reseñas      |
 | v1.6    | Junio 2026 | Sistema de blog completo: Decap CMS, post.html, tarjetas dinámicas en index, posts/index.json     |
+| v1.7    | Junio 2026 | Proxy OAuth en Vercel (api/auth.js + api/callback.js); autenticación CMS en depuración            |
 
 ---
 
