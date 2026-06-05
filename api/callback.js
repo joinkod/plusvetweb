@@ -37,13 +37,18 @@ function respond(res, status, content) {
   res.end(`<!DOCTYPE html>
 <html>
 <head><title>Auth</title></head>
-<body>
+<body style="font-family:sans-serif;padding:20px">
+<p id="st">Autenticando...</p>
 <script>
   (function() {
     var msg = ${JSON.stringify(message)};
+    var st = document.getElementById('st');
     if (window.opener) {
       window.opener.postMessage(msg, '*');
-      setTimeout(function() { window.close(); }, 500);
+      st.textContent = 'OK — token enviado al CMS. Cerrando...';
+      setTimeout(function() { window.close(); }, 2000);
+    } else {
+      st.textContent = 'Error: no hay opener disponible.';
     }
   })();
 <\/script>
