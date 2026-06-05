@@ -775,13 +775,7 @@
       display: inline-flex; align-items: center; gap: 4px;
       font-size: 11px; font-weight: 700; color: #FF6D00;
     }
-    .lg-circle {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      background: #FF6D00;
-      display: inline-flex; align-items: center; justify-content: center;
-      color: white; font-size: 8px; flex-shrink: 0;
-    }
+    .lg-icon { flex-shrink: 0; display: block; }
     .testi-review-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 3px; }
     .testi-review-stats { font-size: 11px; color: var(--gray); }
 
@@ -1901,7 +1895,13 @@
             <div>
               <div class="testi-name">José Albeiro Valencia Ramírez</div>
               <div class="testi-review-meta">
-                <span class="local-guide-badge"><span class="lg-circle"><i class="fa-solid fa-location-dot"></i></span> Local Guide</span>
+                <span class="local-guide-badge">
+                  <svg class="lg-icon" viewBox="0 0 100 100" width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="50" fill="#FF6D00"/>
+                    <polygon points="50,12 56,35 77,23 65,44 88,50 65,56 77,77 56,65 50,88 44,65 23,77 35,56 12,50 35,44 23,23 44,35" fill="white"/>
+                  </svg>
+                  Local Guide
+                </span>
                 <span class="testi-review-stats">· 140 opiniones · 46 fotos</span>
               </div>
             </div>
