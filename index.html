@@ -856,6 +856,78 @@
     ============================================================ */
     .blog { background: var(--white); }
 
+    /* Blog grid */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+      margin-top: 12px;
+    }
+
+    .blog-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+      text-decoration: none; color: inherit;
+    }
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .blog-card-cover {
+      height: 190px;
+      background: var(--gradient);
+      overflow: hidden;
+      position: relative;
+    }
+    .blog-card-cover img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s var(--ease);
+    }
+    .blog-card:hover .blog-card-cover img { transform: scale(1.05); }
+    .blog-card-cover-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; opacity: .3; color: var(--white);
+    }
+
+    .blog-card-body { padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; }
+    .blog-card-cat {
+      display: inline-block;
+      background: rgba(34,188,189,.12);
+      color: var(--teal-dark);
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      padding: 3px 10px; border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .blog-card-title {
+      font-size: 1.05rem; font-weight: 700;
+      line-height: 1.35; margin-bottom: 10px;
+      color: var(--dark);
+    }
+    .blog-card-summary {
+      font-size: .87rem; color: var(--gray);
+      line-height: 1.55; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .blog-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid rgba(0,0,0,.07);
+    }
+    .blog-card-date { font-size: .78rem; color: var(--gray); }
+    .blog-card-link {
+      font-size: .82rem; font-weight: 600; color: var(--teal);
+      display: flex; align-items: center; gap: 4px;
+    }
+
     .blog-soon {
       text-align: center;
       padding: 80px 40px;
@@ -2043,7 +2115,10 @@
         <h2 class="section-title">Consejos para el cuidado<br>de tu mascota</h2>
       </div>
 
-      <div class="blog-soon fade-up">
+      <!-- Blog cards injected by JS; fallback shown while empty -->
+      <div id="blogGrid" class="blog-grid"></div>
+
+      <div class="blog-soon fade-up" id="blogSoon" style="display:none">
         <i class="fa-solid fa-newspaper"></i>
         <h3>Próximamente</h3>
         <p>Estamos preparando contenido útil sobre salud, nutrición, prevención y bienestar para perros y gatos. ¡Muy pronto!</p>
@@ -2482,6 +2557,69 @@
         btn.disabled = false;
       }, 3500);
     }
+  </script>
+
+  <!-- Blog post loader -->
+  <script>
+    const CATEGORY_LABELS = {
+      salud: 'Salud y Prevención',
+      nutricion: 'Nutrición',
+      comportamiento: 'Comportamiento',
+      curiosidades: 'Curiosidades',
+      noticias: 'Noticias Plus Vet'
+    };
+
+    function fmtDate(str) {
+      if (!str) return '';
+      const d = new Date(str + 'T12:00:00');
+      return d.toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function buildBlogCard(post) {
+      const slug = post.slug || post.file || '';
+      const href = `post.html?post=${encodeURIComponent(slug)}`;
+      const cover = post.cover
+        ? `<img src="${post.cover}" alt="${post.title || ''}" loading="lazy">`
+        : `<div class="blog-card-cover-placeholder"><i class="fa-solid fa-paw"></i></div>`;
+      const cat = CATEGORY_LABELS[post.category] || post.category || '';
+
+      return `
+        <a class="blog-card fade-up" href="${href}">
+          <div class="blog-card-cover">${cover}</div>
+          <div class="blog-card-body">
+            ${cat ? `<span class="blog-card-cat">${cat}</span>` : ''}
+            <div class="blog-card-title">${post.title || 'Sin título'}</div>
+            <div class="blog-card-summary">${post.summary || ''}</div>
+            <div class="blog-card-footer">
+              <span class="blog-card-date">${fmtDate(post.date)}</span>
+              <span class="blog-card-link">Leer <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </div>
+        </a>`;
+    }
+
+    async function loadBlog() {
+      const grid = document.getElementById('blogGrid');
+      const soon = document.getElementById('blogSoon');
+      try {
+        const res = await fetch('posts/index.json');
+        if (!res.ok) throw new Error('not found');
+        const posts = await res.json();
+        if (!Array.isArray(posts) || posts.length === 0) {
+          soon.style.display = '';
+          return;
+        }
+        // Show latest 6, most recent first
+        const sorted = [...posts].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        grid.innerHTML = sorted.slice(0, 6).map(buildBlogCard).join('');
+        // Re-trigger fade-up observer for new cards
+        grid.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+      } catch (_) {
+        soon.style.display = '';
+      }
+    }
+
+    loadBlog();
   </script>
 
 </body>

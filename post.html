@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Plus Vet – Blog Veterinario">
+  <title>Blog – Plus Vet</title>
+
+  <link rel="icon" href="assets/icon-source.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#22bcbd">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    :root {
+      --teal:       #22bcbd;
+      --teal-dark:  #1aa8a9;
+      --orange:     #ffa018;
+      --orange-dark:#e8901a;
+      --gray:       #7f7f7f;
+      --dark:       #191919;
+      --deep:       #042827;
+      --light:      #f4f4f4;
+      --white:      #ffffff;
+      --gradient:   linear-gradient(135deg, #22bcbd 0%, #042827 100%);
+      --font:       'Poppins', sans-serif;
+      --shadow-sm:  0 2px 8px  rgba(0,0,0,.07);
+      --shadow-md:  0 8px 32px rgba(0,0,0,.11);
+      --radius:     16px;
+      --radius-sm:  8px;
+      --ease:       cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); color: var(--dark); background: var(--white); line-height: 1.6; }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(34,188,189,.12);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 64px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+    .nav-logo img { height: 36px; }
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--teal); font-weight: 600; font-size: .9rem;
+      text-decoration: none; transition: gap .2s;
+    }
+    .nav-back:hover { gap: 12px; }
+    .nav-back i { font-size: 1rem; }
+
+    /* HERO */
+    .post-hero {
+      margin-top: 64px;
+      height: 360px;
+      background: var(--gradient);
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .post-hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: .4;
+    }
+    .post-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(4,40,39,.9) 0%, rgba(4,40,39,.2) 100%);
+    }
+    .post-hero-content {
+      position: relative; z-index: 2;
+      padding: 40px 48px;
+      color: var(--white);
+      max-width: 860px;
+    }
+    .post-category {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--white);
+      font-size: .75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      padding: 4px 12px; border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .post-hero h1 {
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-weight: 800; line-height: 1.2;
+    }
+    .post-meta {
+      display: flex; align-items: center; gap: 18px;
+      margin-top: 14px;
+      font-size: .85rem; opacity: .85;
+    }
+    .post-meta i { color: var(--teal); }
+
+    /* BODY */
+    .post-body-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    /* Markdown content styles */
+    .post-content { font-size: 1.05rem; line-height: 1.8; color: #333; }
+    .post-content h1,
+    .post-content h2 { color: var(--deep); margin: 2em 0 .6em; line-height: 1.25; }
+    .post-content h1 { font-size: 1.8rem; }
+    .post-content h2 { font-size: 1.35rem; border-bottom: 2px solid var(--teal); padding-bottom: 6px; }
+    .post-content h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; color: var(--dark); font-weight: 700; }
+    .post-content p { margin-bottom: 1.2em; }
+    .post-content ul, .post-content ol { margin: .8em 0 1.2em 1.5em; }
+    .post-content li { margin-bottom: .4em; }
+    .post-content blockquote {
+      border-left: 4px solid var(--teal);
+      margin: 1.5em 0; padding: 12px 20px;
+      background: rgba(34,188,189,.06);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic; color: #555;
+    }
+    .post-content img {
+      max-width: 100%; border-radius: var(--radius);
+      margin: 1.5em 0; box-shadow: var(--shadow-md);
+    }
+    .post-content a { color: var(--teal); text-decoration: underline; }
+    .post-content a:hover { color: var(--teal-dark); }
+    .post-content code {
+      background: #f0fafa; color: var(--deep);
+      padding: 2px 6px; border-radius: 4px;
+      font-size: .9em; font-family: monospace;
+    }
+    .post-content pre {
+      background: var(--deep); color: #aef;
+      padding: 20px; border-radius: var(--radius-sm);
+      overflow-x: auto; margin: 1.5em 0;
+    }
+    .post-content pre code { background: none; color: inherit; }
+    .post-content table { width: 100%; border-collapse: collapse; margin: 1.5em 0; }
+    .post-content th { background: var(--teal); color: #fff; padding: 10px 14px; text-align: left; }
+    .post-content td { padding: 9px 14px; border-bottom: 1px solid #e8e8e8; }
+    .post-content tr:nth-child(even) td { background: #f9f9f9; }
+
+    /* BACK TO BLOG */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gradient);
+      color: var(--white); font-weight: 600; font-size: .9rem;
+      padding: 12px 24px; border-radius: 999px;
+      text-decoration: none; margin-top: 40px;
+      transition: opacity .2s, transform .2s;
+    }
+    .back-btn:hover { opacity: .9; transform: translateY(-2px); }
+
+    /* LOADING / ERROR */
+    .post-state {
+      max-width: 600px; margin: 120px auto; text-align: center; padding: 24px;
+    }
+    .post-state i { font-size: 3rem; color: var(--teal); margin-bottom: 16px; }
+    .post-state h2 { color: var(--dark); margin-bottom: 8px; }
+    .post-state p { color: var(--gray); }
+
+    /* FOOTER */
+    .post-footer {
+      background: var(--deep); color: rgba(255,255,255,.6);
+      text-align: center; padding: 24px;
+      font-size: .85rem;
+    }
+    .post-footer a { color: var(--teal); text-decoration: none; }
+
+    /* BACK TO TOP */
+    .back-to-top {
+      position: fixed; bottom: 24px; left: 24px; z-index: 50;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--teal); color: var(--white);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; box-shadow: 0 4px 16px rgba(34,188,189,.4);
+      opacity: 0; visibility: hidden;
+      transition: opacity .3s, visibility .3s, transform .2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; }
+    .back-to-top:hover { transform: scale(1.1); }
+
+    @media (max-width: 600px) {
+      .post-hero { height: 280px; }
+      .post-hero-content { padding: 24px 20px; }
+      .post-body-wrap { padding: 36px 18px 72px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/plusvet-horizontal-fullcolor.svg" alt="Plus Vet">
+    </a>
+    <a href="index.html#blog" class="nav-back">
+      <i class="fa-solid fa-arrow-left"></i> Volver al blog
+    </a>
+  </nav>
+
+  <!-- HERO (populated by JS) -->
+  <div class="post-hero" id="postHero">
+    <div class="post-hero-overlay"></div>
+    <div class="post-hero-content" id="postHeroContent">
+      <div class="post-state" style="margin:0;text-align:left">
+        <p style="color:rgba(255,255,255,.7)">Cargando artículo…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE -->
+  <main class="post-body-wrap" id="postMain" style="display:none">
+    <article class="post-content" id="postContent"></article>
+    <a href="index.html#blog" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Ver todos los artículos
+    </a>
+  </main>
+
+  <!-- ERROR STATE -->
+  <div class="post-state" id="postError" style="display:none">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    <h2>Artículo no encontrado</h2>
+    <p>El artículo que buscas no existe o fue eliminado.</p>
+    <a href="index.html#blog" class="back-btn" style="margin-top:24px">
+      <i class="fa-solid fa-arrow-left"></i> Volver al blog
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="post-footer">
+    <p>&copy; <span id="footerYear"></span> Plus Vet Clínica Veterinaria · Santa Rosa de Cabal, Risaralda ·
+      <a href="index.html">Inicio</a>
+    </p>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Ir arriba">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <script>
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+    // Back to top
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      btt.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // Parse frontmatter from Markdown file content
+    function parseFrontmatter(text) {
+      const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
+      if (!match) return { meta: {}, body: text };
+      const meta = {};
+      match[1].split('\n').forEach(line => {
+        const colon = line.indexOf(':');
+        if (colon === -1) return;
+        const key = line.slice(0, colon).trim();
+        const val = line.slice(colon + 1).trim().replace(/^["']|["']$/g, '');
+        meta[key] = val;
+      });
+      return { meta, body: match[2] };
+    }
+
+    function categoryLabel(slug) {
+      const map = {
+        salud: 'Salud y Prevención',
+        nutricion: 'Nutrición',
+        comportamiento: 'Comportamiento',
+        curiosidades: 'Curiosidades',
+        noticias: 'Noticias Plus Vet'
+      };
+      return map[slug] || slug;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr + 'T12:00:00');
+      return d.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    async function loadPost() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('post');
+
+      if (!slug) { showError(); return; }
+
+      // Determine file path — Decap CMS saves as posts/YYYY-MM-DD-slug.md
+      // We search posts/index.json first to find the right filename
+      let filename = null;
+      try {
+        const idxRes = await fetch('posts/index.json');
+        if (idxRes.ok) {
+          const posts = await idxRes.json();
+          const found = posts.find(p => p.slug === slug || p.file === slug);
+          if (found) filename = found.file || found.slug;
+        }
+      } catch (_) {}
+
+      // Fallback: try slug directly, then with date prefix pattern
+      const candidates = filename
+        ? [`posts/${filename}.md`]
+        : [`posts/${slug}.md`];
+
+      let text = null;
+      for (const path of candidates) {
+        try {
+          const r = await fetch(path);
+          if (r.ok) { text = await r.text(); break; }
+        } catch (_) {}
+      }
+
+      if (!text) {
+        // Last resort: scan posts/ for a file containing the slug
+        try {
+          const idxRes = await fetch('posts/index.json');
+          if (idxRes.ok) {
+            const posts = await idxRes.json();
+            for (const p of posts) {
+              if ((p.file || '').includes(slug) || (p.slug || '').includes(slug)) {
+                const r = await fetch(`posts/${p.file || p.slug}.md`);
+                if (r.ok) { text = await r.text(); break; }
+              }
+            }
+          }
+        } catch (_) {}
+      }
+
+      if (!text) { showError(); return; }
+
+      const { meta, body } = parseFrontmatter(text);
+      renderPost(meta, body);
+    }
+
+    function renderPost(meta, body) {
+      document.title = (meta.title || 'Artículo') + ' – Plus Vet';
+      document.querySelector('meta[name="description"]').content =
+        meta.summary || meta.title || 'Blog Plus Vet';
+
+      // Hero
+      const hero = document.getElementById('postHero');
+      if (meta.cover) {
+        const img = document.createElement('img');
+        img.src = meta.cover;
+        img.alt = meta.title || '';
+        img.className = 'post-hero-img';
+        hero.insertBefore(img, hero.firstChild);
+      }
+
+      document.getElementById('postHeroContent').innerHTML = `
+        ${meta.category ? `<span class="post-category">${categoryLabel(meta.category)}</span>` : ''}
+        <h1>${meta.title || 'Sin título'}</h1>
+        <div class="post-meta">
+          ${meta.date ? `<span><i class="fa-regular fa-calendar"></i> ${formatDate(meta.date)}</span>` : ''}
+        </div>
+      `;
+
+      // Body
+      document.getElementById('postContent').innerHTML = marked.parse(body);
+      document.getElementById('postMain').style.display = 'block';
+    }
+
+    function showError() {
+      document.getElementById('postHero').style.display = 'none';
+      document.getElementById('postError').style.display = 'block';
+    }
+
+    loadPost();
+  </script>
+</body>
+</html>

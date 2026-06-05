@@ -1,0 +1,35 @@
+backend:
+  name: github
+  repo: joinkod/plusvetweb
+  branch: main
+  base_url: https://api.netlify.com
+
+locale: es
+
+media_folder: assets/img/blog
+public_folder: /assets/img/blog
+
+collections:
+  - name: posts
+    label: Artículos del Blog
+    label_singular: Artículo
+    folder: posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "post.html?post={{slug}}"
+    fields:
+      - { label: Título, name: title, widget: string }
+      - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { label: Resumen, name: summary, widget: text, hint: "Aparece en la tarjeta del blog (máx. 160 caracteres)" }
+      - label: Categoría
+        name: category
+        widget: select
+        options:
+          - { label: Salud y Prevención, value: salud }
+          - { label: Nutrición, value: nutricion }
+          - { label: Comportamiento, value: comportamiento }
+          - { label: Curiosidades, value: curiosidades }
+          - { label: Noticias Plus Vet, value: noticias }
+        default: salud
+      - { label: Imagen de portada, name: cover, widget: image, required: false }
+      - { label: Contenido, name: body, widget: markdown }
