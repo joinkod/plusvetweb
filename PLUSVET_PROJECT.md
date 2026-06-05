@@ -2,7 +2,7 @@
 
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
-> **Estado:** En desarrollo — v1.4 activo en Vercel  
+> **Estado:** En desarrollo — v1.5 activo en Vercel  
 > **Última actualización:** Junio 2026
 
 ---
@@ -123,7 +123,7 @@ Cardiología, Dermatología, Neurología, Oftalmología, Ortopedia, Oncología a
 | 3 | ¿Por qué Plus Vet?   | `#nosotros`    | ✅ Completo                      |
 | 4 | Equipo médico        | `#equipo`      | ✅ Completo (faltan fotos)       |
 | 5 | Tecnología y Quirófano | `#tecnologia` | ✅ Completo                     |
-| 6 | Testimonios          | `#testimonios` | ✅ Completo (placeholders)       |
+| 6 | Testimonios          | `#testimonios` | ✅ Completo (reseñas reales de Google) |
 | 7 | Galería              | `#galeria`     | ✅ Estructura (faltan fotos)     |
 | 8 | Blog                 | `#blog`        | ✅ "Próximamente"                |
 | 9 | Comunidad            | `#comunidad`   | ✅ Completo                      |
@@ -170,6 +170,16 @@ Aplicado a: `#nosotros`, `#tecnologia`, `#contacto`, `#comunidad`
   - Botón naranja "Cómo llegar" → abre Google Maps con ruta desde ubicación del usuario
   - Animación de flotación suave (mismo keyframe que badges del hero)
   - Se oculta en móvil (`display: none` bajo 768px)
+
+### Sección Testimonios — Reseñas reales de Google
+- Cards rediseñadas con estilo Google: logo multicolor, estrellas en `#FBBC04`, avatar con inicial
+- Badge **Local Guide** con SVG inline del símbolo oficial (círculo naranja `#FF6D00` + estrella blanca de 8 puntas)
+- Reseñas activas:
+  1. José Albeiro Valencia Ramírez — Local Guide · 140 opiniones · 46 fotos
+  2. Miguel Ángel Alonso Martínez — Local Guide · 57 opiniones · 18 fotos
+  3. Manuela Giraldo Arboleda
+- Link "Ver todas las reseñas" apunta al panel de reseñas de Google del negocio
+- Para agregar más reseñas: copiar el bloque `<!-- Reseña real #N -->` y reemplazar el contenido
 
 ### Botón "Llamar" en nav
 - **Móvil:** activa llamada directa (`tel:+573225292764`)
@@ -231,7 +241,7 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 - [ ] Foto principal del hero (clínica o mascota en consulta)
 - [ ] Fotos de los médicos
 - [ ] Fotos de instalaciones (mín. 5: fachada, consulta, quirófano, hospitalización, equipos)
-- [ ] Testimonios reales de clientes
+- [x] Testimonios reales de clientes → 3 reseñas de Google Maps integradas
 
 ### 🟢 Opcionales / Futuros
 - [ ] Confirmar nombre/descripción del servicio "Esquimiatría"
@@ -304,6 +314,7 @@ Al inicio de cada conversación escribir:
 | v1.2    | Mayo 2026  | Datos reales del cliente, orden médicos, botón llamar con popover desktop, animaciones hero        |
 | v1.3    | Mayo 2026  | Ken Burns en 6 secciones, fade suave entre secciones, fondos unificados, favicon SVG + PNG        |
 | v1.4    | Junio 2026 | Google Maps con tarjeta flotante, sección Comunidad, botón multi-canal flotante, botón ir arriba  |
+| v1.5    | Junio 2026 | Testimonios con reseñas reales de Google, badge Local Guide oficial, link a panel de reseñas      |
 
 ---
 
