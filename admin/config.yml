@@ -2,7 +2,8 @@ backend:
   name: github
   repo: joinkod/plusvetweb
   branch: main
-  base_url: https://silly-kitten-80eca0.netlify.app
+  auth_type: pkce
+  app_id: Ov23lir1ajC445tICcGj
 
 locale: es
 
