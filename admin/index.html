@@ -7,9 +7,28 @@
 </head>
 <body>
   <script>
-    window.addEventListener('message', function(e) {
-      console.log('[CMS DEBUG] message received — origin:', e.origin, '— data:', e.data);
-    });
+    // Intercept window.open to log the exact auth URL
+    var _open = window.open;
+    window.open = function(url, name, features) {
+      if (url && typeof url === 'string' && url.includes('auth')) {
+        console.log('[CMS DEBUG] window.open → URL:', url);
+      }
+      return _open.apply(this, arguments);
+    };
+
+    // Intercept addEventListener to track message listeners
+    var _addEL = window.addEventListener.bind(window);
+    window.addEventListener = function(type, fn, opts) {
+      if (type === 'message') {
+        console.log('[CMS DEBUG] message listener registered');
+        var wrapped = function(e) {
+          console.log('[CMS DEBUG] message listener fired — origin:', e.origin, '— data:', typeof e.data === 'string' ? e.data.slice(0, 80) : typeof e.data);
+          return fn.apply(this, arguments);
+        };
+        return _addEL(type, wrapped, opts);
+      }
+      return _addEL(type, fn, opts);
+    };
   </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
