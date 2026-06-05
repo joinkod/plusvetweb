@@ -252,9 +252,7 @@ plusvet/
 ### Repositorio
 - **GitHub:** `github.com/joinkod/plusvetweb`
 - **Rama principal:** `main`
-- **Rama local:** `master` → siempre hacer push con `git push origin master:main`
-
-> ⚠️ **IMPORTANTE:** Vercel escucha la rama `main`. El trabajo local está en `master`. Siempre usar `git push origin master:main` — nunca `git push origin master`.
+- **Rama local:** `main` → push con `git push origin main`
 
 ### Despliegue
 - **Plataforma:** Vercel
@@ -265,7 +263,7 @@ plusvet/
 ```
 Claude Code (local) ──► edita index.html / assets
                                     │
-                             git push origin master:main
+                             git push origin main
                                     │
                                     ▼
                         GitHub (joinkod/plusvetweb) → rama main
