@@ -2,8 +2,8 @@ backend:
   name: github
   repo: joinkod/plusvetweb
   branch: main
-  auth_type: pkce
-  app_id: Ov23lir1ajC445tICcGj
+  base_url: https://plusvetweb.vercel.app
+  auth_endpoint: api/auth
 
 locale: es
 

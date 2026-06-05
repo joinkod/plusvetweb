@@ -20,6 +20,10 @@
     {
       "src": "assets/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "api/*.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -42,6 +46,10 @@
     {
       "src": "/posts/(.*)",
       "dest": "/posts/$1"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
       "src": "/(.*)",
