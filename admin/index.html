@@ -58,12 +58,15 @@
       console.error('[CMS DEBUG] Unhandled rejection:', e.reason);
     });
 
-    // When message arrives, test the token directly against GitHub API
+    // When real message arrives: test token + re-dispatch synthetic event (source=null)
+    var syntheticSent = false;
     window.addEventListener('message', function(e) {
       if (typeof e.data !== 'string' || !e.data.startsWith('authorization:github:success:')) return;
+      if (syntheticSent) { console.log('[CMS DEBUG] synthetic message received by own listener (ignored)'); return; }
+
       try {
         var creds = JSON.parse(e.data.slice('authorization:github:success:'.length));
-        console.log('[CMS DEBUG] Testing token directly with GitHub API...');
+        console.log('[CMS DEBUG] Token received, testing GitHub API...');
         fetch('https://api.github.com/user', {
           headers: { 'Authorization': 'token ' + creds.token, 'Accept': 'application/vnd.github+json' }
         }).then(function(r) {
@@ -71,10 +74,20 @@
           return r.json();
         }).then(function(u) {
           console.log('[CMS DEBUG] GitHub user:', u.login || u.message);
-        }).catch(function(err) {
-          console.error('[CMS DEBUG] GitHub API fetch error:', err);
         });
-      } catch(ex) { console.error('[CMS DEBUG] parse error:', ex); }
+      } catch(ex) {}
+
+      // Re-dispatch as synthetic event (source will be null) to test if e.source check is the issue
+      var msgData = e.data;
+      syntheticSent = true;
+      setTimeout(function() {
+        console.log('[CMS DEBUG] Dispatching SYNTHETIC message (source=null)...');
+        window.dispatchEvent(new MessageEvent('message', {
+          data: msgData,
+          origin: window.location.origin,
+          source: null
+        }));
+      }, 600);
     });
   </script>
   <script src="https://unpkg.com/decap-cms@3.1.2/dist/decap-cms.js"></script>
