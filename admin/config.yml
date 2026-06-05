@@ -2,7 +2,7 @@ backend:
   name: github
   repo: joinkod/plusvetweb
   branch: main
-  base_url: https://api.netlify.com
+  base_url: https://silly-kitten-80eca0.netlify.app
 
 locale: es
 
