@@ -13,6 +13,8 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>emailjs.init('TU_PUBLIC_KEY');</script>
 
   <style>
     /* ============================================================
@@ -2260,18 +2262,18 @@
           <div class="form-row">
             <div class="form-group">
               <label>Nombre completo *</label>
-              <input type="text" placeholder="Tu nombre">
+              <input id="inp-nombre" type="text" placeholder="Tu nombre">
             </div>
             <div class="form-group">
               <label>Teléfono / WhatsApp *</label>
-              <input type="tel" placeholder="+57 300 000 0000">
+              <input id="inp-telefono" type="tel" placeholder="+57 300 000 0000">
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>Tipo de mascota *</label>
-              <select>
+              <select id="inp-tipo">
                 <option value="">Seleccionar</option>
                 <option>🐕 Perro</option>
                 <option>🐈 Gato</option>
@@ -2279,13 +2281,13 @@
             </div>
             <div class="form-group">
               <label>Nombre de la mascota</label>
-              <input type="text" placeholder="¿Cómo se llama?">
+              <input id="inp-mascota" type="text" placeholder="¿Cómo se llama?">
             </div>
           </div>
 
           <div class="form-group">
             <label>Servicio de interés *</label>
-            <select>
+            <select id="inp-servicio">
               <option value="">Seleccionar servicio</option>
               <option>Medicina General</option>
               <option>Cirugía</option>
@@ -2301,7 +2303,7 @@
 
           <div class="form-group">
             <label>Mensaje o descripción del caso</label>
-            <textarea placeholder="Cuéntanos brevemente sobre tu mascota y el motivo de consulta…"></textarea>
+            <textarea id="inp-mensaje" placeholder="Cuéntanos brevemente sobre tu mascota y el motivo de consulta…"></textarea>
           </div>
 
           <button class="btn btn-orange" id="submitBtn" style="width:100%;" onclick="handleSubmit(this)">
@@ -2548,14 +2550,54 @@
 
     // --- Form submit feedback ---
     function handleSubmit(btn) {
-      btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Solicitud enviada!';
-      btn.style.background = 'var(--teal)';
+      const nombre   = document.getElementById('inp-nombre').value.trim();
+      const telefono = document.getElementById('inp-telefono').value.trim();
+      const tipo     = document.getElementById('inp-tipo').value;
+      const mascota  = document.getElementById('inp-mascota').value.trim();
+      const servicio = document.getElementById('inp-servicio').value;
+      const mensaje  = document.getElementById('inp-mensaje').value.trim();
+
+      if (!nombre || !telefono || !tipo || !servicio) {
+        btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Completa los campos obligatorios';
+        btn.style.background = '#e05252';
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
+          btn.style.background = '';
+        }, 3000);
+        return;
+      }
+
       btn.disabled = true;
-      setTimeout(() => {
-        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
-        btn.style.background = '';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+
+      emailjs.send('TU_SERVICE_ID', 'TU_TEMPLATE_ID', {
+        nombre:        nombre,
+        telefono:      telefono,
+        mascota_tipo:  tipo,
+        mascota_nombre: mascota || 'No especificado',
+        servicio:      servicio,
+        mensaje:       mensaje || 'Sin mensaje adicional',
+      }).then(function() {
+        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Solicitud enviada!';
+        btn.style.background = 'var(--teal)';
+        ['inp-nombre','inp-telefono','inp-tipo','inp-mascota','inp-servicio','inp-mensaje'].forEach(function(id) {
+          const el = document.getElementById(id);
+          if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = '';
+        });
+        setTimeout(function() {
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 4000);
+      }, function() {
+        btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error al enviar. Intenta de nuevo.';
+        btn.style.background = '#e05252';
         btn.disabled = false;
-      }, 3500);
+        setTimeout(function() {
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
+          btn.style.background = '';
+        }, 3500);
+      });
     }
   </script>
 
