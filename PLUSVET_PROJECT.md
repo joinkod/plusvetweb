@@ -2,8 +2,8 @@
 
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
-> **Estado:** En desarrollo — v1.7 activo en Vercel  
-> **Última actualización:** Junio 2026 (sesión 3 — autenticación CMS en depuración)
+> **Estado:** En producción — v1.9 activo en Vercel  
+> **Última actualización:** Junio 2026 (sesión 3 — autenticación CMS resuelta, CMS operativo)
 
 ---
 
@@ -248,7 +248,7 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 ### 🟢 Opcionales / Futuros
 - [ ] Confirmar nombre/descripción del servicio "Esquimiatría"
 - [ ] Lista definitiva de especialistas en convenio
-- [x] Sistema de blog con CMS → Decap CMS activo (falta publicar primeros artículos)
+- [x] Sistema de blog con CMS → Decap CMS activo y autenticación funcionando
 - [ ] Publicar primeros artículos en el blog
 - [ ] Integrar formulario con backend (EmailJS, Formspree, etc.)
 - [ ] SEO: meta tags Open Graph para redes sociales
@@ -267,11 +267,12 @@ plusvetweb/
 ├── .gitignore                          # Excluye node_modules, lock files, OS files
 ├── PLUSVET_PROJECT.md                  # Este documento
 ├── api/
-│   ├── auth.js                         # Serverless: redirige al flujo OAuth de GitHub
+│   ├── auth.js                         # Serverless: handshake Netlify + redirige a GitHub OAuth
 │   └── callback.js                     # Serverless: intercambia code por token, hace postMessage
 ├── admin/
-│   ├── index.html                      # Panel Decap CMS (con shim de autenticación)
-│   └── config.yml                      # Config CMS: backend github, base_url Vercel
+│   ├── index.html                      # Panel Decap CMS
+│   ├── config.yml                      # Config CMS: backend github, base_url Vercel
+│   └── decap-cms.js                    # Decap CMS 3.1.2 self-hosted (evita Tracking Prevention)
 ├── posts/
 │   └── index.json                      # Índice de posts (vacío hasta primer artículo)
 └── assets/
@@ -377,11 +378,13 @@ Decap CMS implementa un **protocolo de handshake en dos pasos** antes de iniciar
 Al inicio de cada conversación escribir:
 > *"Lee el archivo `PLUSVET_PROJECT.md` y úsalo como contexto para continuar trabajando en este proyecto."*
 
-### Estado actual (post v1.9)
+### Estado actual (v1.9)
 ✅ **CMS completamente funcional.** El editor puede publicar artículos desde `https://plusvetweb.vercel.app/admin/`
 
-⚠️ **Revocar tokens de debug:** Varios tokens `gho_*` quedaron visibles en consola durante el proceso de debug. Ir a:
-GitHub → Settings → Developer settings → OAuth Apps → Plus Vet → **Revoke all user tokens**
+**Notas operativas del CMS:**
+- El 404 en `assets/img/blog` al cargar es **normal** — la carpeta se crea sola con el primer artículo
+- Los artículos se guardan como `.md` en `posts/` y Vercel redespliega automáticamente
+- El token OAuth dura varias horas; si expira, volver a hacer login en `/admin/`
 
 ---
 
