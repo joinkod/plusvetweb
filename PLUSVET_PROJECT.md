@@ -344,42 +344,44 @@ Editor entra a /admin/  →  autenticación GitHub OAuth (proxy Vercel serverles
   - Callback URL registrada: `https://plusvetweb.vercel.app/api/callback`
 - **Versiones cargadas:** decap-cms 3.1.2 / decap-cms-core 3.3.2
 
-#### Causa raíz identificada y resuelta (Junio 2026)
+#### Causa raíz identificada y resuelta (Junio 2026) ✅
 
-Edge's **Tracking Prevention** bloqueaba el acceso a `localStorage` para scripts cargados desde `unpkg.com`. Aunque el OAuth completaba correctamente y el mensaje llegaba a todos los listeners, Decap CMS no podía guardar el token en storage — fallaba en silencio, el dashboard nunca cargaba.
+Decap CMS implementa un **protocolo de handshake en dos pasos** antes de iniciar el flujo OAuth. La implementación original de `api/auth.js` hacía `res.redirect()` directo a GitHub, saltándose el handshake. El resultado: `authorizeCallback` nunca se registraba, el token llegaba pero nadie lo escuchaba.
 
-**Evidencia en consola:**
-```
-Tracking Prevention blocked access to storage for https://unpkg.com/decap-cms@3.1.2/dist/decap-cms.js
-```
+**Flujo correcto (ahora implementado):**
+1. Popup carga `/api/auth` → envía `"authorizing:github"` al opener
+2. Decap recibe → registra `authorizeCallback` → echa el mensaje de vuelta al popup
+3. Popup recibe el eco → redirige a GitHub OAuth
+4. Callback envía `"authorization:github:success:{token}"`
+5. `authorizeCallback` procesa el token → dashboard carga ✅
 
-**Fix aplicado (v1.8):** `decap-cms.js` se sirve desde el propio dominio (`/admin/decap-cms.js`) en lugar de unpkg. Al ser same-origin, Edge no aplica la restricción de tracking.
+**Fixes adicionales aplicados en el camino:**
+- `decap-cms.js` se sirve desde el propio dominio (`/admin/decap-cms.js`) en lugar de unpkg (evita Tracking Prevention de Edge bloqueando localStorage)
 
 | Paso | Estado |
 |------|--------|
 | Popup OAuth se abre | ✅ |
+| Handshake `"authorizing:github"` | ✅ (v1.9) |
 | Usuario autoriza en GitHub | ✅ |
 | Server intercambia code → token | ✅ |
-| Popup envía `postMessage` | ✅ |
-| Mensaje llega al admin window | ✅ |
-| Decap CMS almacena token en localStorage | ✅ (resuelto con self-hosting) |
-| Dashboard del CMS aparece | ✅ (pendiente verificar tras deploy) |
+| Popup envía `"authorization:github:success:{...}"` | ✅ |
+| Decap CMS procesa el token | ✅ |
+| Dashboard del CMS aparece | ✅ **FUNCIONANDO** |
 
 #### Intentos previos descartados
 - Netlify como proxy OAuth → "Not Found" (el site de Netlify es estático)
 - PKCE auth → GitHub OAuth Apps no soportan PKCE puro sin client secret
-- `base_url: https://api.netlify.com` → requiere dominio registrado en Netlify
-- Shim `source: null` → no era el problema; descartado y eliminado
+- Shim `source: null` → no era el problema
 
 ### Cómo iniciar una nueva sesión en Claude Code
 Al inicio de cada conversación escribir:
 > *"Lee el archivo `PLUSVET_PROJECT.md` y úsalo como contexto para continuar trabajando en este proyecto."*
 
-### Estado al retomar (post v1.8)
-El CMS debería funcionar correctamente. Si hay problemas:
-1. Verificar que Vercel haya desplegado el commit `8bb68f9`
-2. Probar en `https://plusvetweb.vercel.app/admin/` con Edge (sin modo debug)
-3. Si sigue fallando, revisar si la ruta `/admin/decap-cms.js` en `vercel.json` está sirviendo correctamente el archivo
+### Estado actual (post v1.9)
+✅ **CMS completamente funcional.** El editor puede publicar artículos desde `https://plusvetweb.vercel.app/admin/`
+
+⚠️ **Revocar tokens de debug:** Varios tokens `gho_*` quedaron visibles en consola durante el proceso de debug. Ir a:
+GitHub → Settings → Developer settings → OAuth Apps → Plus Vet → **Revoke all user tokens**
 
 ---
 
@@ -397,6 +399,7 @@ El CMS debería funcionar correctamente. Si hay problemas:
 | v1.7    | Junio 2026 | Proxy OAuth en Vercel (api/auth.js + api/callback.js); autenticación CMS en depuración            |
 | v1.7.1  | Junio 2026 | Debug dirigido: interceptores de window.open + addEventListener + shim sintético source=null       |
 | v1.8    | Junio 2026 | Fix CMS auth: self-host decap-cms.js para evitar Tracking Prevention de Edge bloqueando localStorage |
+| v1.9    | Junio 2026 | Fix CMS auth: implementar protocolo de handshake Netlify en api/auth.js — CMS completamente funcional |
 
 ---
 
