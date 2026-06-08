@@ -13,7 +13,6 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
   <style>
     /* ============================================================
@@ -1037,33 +1036,51 @@
       position: relative;
       z-index: 1;
     }
-    .calendly-cta {
-      display: flex; align-items: center; gap: 16px;
-      background: linear-gradient(135deg, var(--teal), #1a9a9b);
+    .booking-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
       border-radius: var(--radius);
-      padding: 20px 24px;
-      text-decoration: none;
-      color: white;
-      margin-bottom: 8px;
+      padding: 40px;
+      text-align: center;
+    }
+    .booking-card__icon {
+      font-size: 52px; color: var(--teal); margin-bottom: 20px;
+    }
+    .booking-card__title {
+      font-size: 22px; font-weight: 700; color: white; margin-bottom: 12px;
+    }
+    .booking-card__desc {
+      color: rgba(255,255,255,.7); font-size: 15px; line-height: 1.6; margin-bottom: 24px;
+    }
+    .booking-card__features {
+      list-style: none; padding: 0; margin: 0 0 32px;
+      display: flex; flex-direction: column; gap: 10px; text-align: left;
+    }
+    .booking-card__features li {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,255,255,.85); font-size: 14px;
+    }
+    .booking-card__features li i { color: var(--teal); flex-shrink: 0; }
+
+    /* Botón flotante de agenda */
+    .btn-agenda-flotante {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 9997;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--orange); color: white; text-decoration: none;
+      padding: 14px 32px; border-radius: 50px;
+      font-weight: 700; font-size: 15px;
+      box-shadow: 0 4px 24px rgba(255,160,24,.45);
       transition: transform .2s, box-shadow .2s;
+      white-space: nowrap;
     }
-    .calendly-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,188,189,.35); }
-    .calendly-cta__icon { font-size: 28px; opacity: .9; flex-shrink: 0; }
-    .calendly-cta__title { font-size: 16px; font-weight: 700; }
-    .calendly-cta__sub { font-size: 12px; opacity: .8; margin-top: 2px; }
-    .calendly-cta__arrow { margin-left: auto; font-size: 16px; opacity: .7; flex-shrink: 0; }
-    .form-divider {
-      text-align: center; position: relative; margin: 24px 0 20px;
+    .btn-agenda-flotante:hover {
+      transform: translateX(-50%) translateY(-3px);
+      box-shadow: 0 8px 32px rgba(255,160,24,.6);
     }
-    .form-divider::before {
-      content: ''; position: absolute; top: 50%; left: 0; right: 0;
-      height: 1px; background: rgba(255,255,255,.12);
+    @media (max-width: 600px) {
+      .btn-agenda-flotante { font-size: 13px; padding: 12px 22px; bottom: 80px; }
     }
-    .form-divider span {
-      position: relative; background: transparent;
-      padding: 0 14px; font-size: 12px; color: rgba(255,255,255,.45);
-    }
-    .form-heading { font-size: 20px; font-weight: 700; color: white; margin-bottom: 28px; }
 
     .form-group { margin-bottom: 18px; }
     .form-group label {
@@ -2280,73 +2297,23 @@
           </div>
         </div>
 
-        <!-- Form -->
+        <!-- Calendly booking card -->
         <div class="contact-form fade-up">
-          <!-- Calendly CTA -->
-          <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="calendly-cta">
-            <div class="calendly-cta__icon"><i class="fa-solid fa-calendar-check"></i></div>
-            <div>
-              <div class="calendly-cta__title">Agenda tu cita en línea</div>
-              <div class="calendly-cta__sub">Elige fecha y hora disponible — confirmación inmediata</div>
-            </div>
-            <i class="fa-solid fa-arrow-right calendly-cta__arrow"></i>
-          </a>
-
-          <div class="form-divider"><span>o envíanos un mensaje</span></div>
-
-          <div class="form-heading">Consultas generales</div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nombre completo *</label>
-              <input id="inp-nombre" type="text" placeholder="Tu nombre">
-            </div>
-            <div class="form-group">
-              <label>Teléfono / WhatsApp *</label>
-              <input id="inp-telefono" type="tel" placeholder="+57 300 000 0000">
-            </div>
+          <div class="booking-card">
+            <div class="booking-card__icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <h3 class="booking-card__title">Agenda tu cita en línea</h3>
+            <p class="booking-card__desc">Elige la fecha y hora que mejor te convenga. Sin llamadas, sin esperas — confirmación inmediata en tu correo.</p>
+            <ul class="booking-card__features">
+              <li><i class="fa-solid fa-check"></i> Horarios disponibles en tiempo real</li>
+              <li><i class="fa-solid fa-check"></i> Confirmación automática por correo</li>
+              <li><i class="fa-solid fa-check"></i> Recordatorio antes de tu cita</li>
+              <li><i class="fa-solid fa-check"></i> Sin registro ni cuenta requerida</li>
+            </ul>
+            <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="btn btn-orange" style="width:100%;justify-content:center;margin-top:8px;">
+              <i class="fa-solid fa-calendar-check"></i>
+              Ver horarios disponibles
+            </a>
           </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Tipo de mascota *</label>
-              <select id="inp-tipo">
-                <option value="">Seleccionar</option>
-                <option>🐕 Perro</option>
-                <option>🐈 Gato</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Nombre de la mascota</label>
-              <input id="inp-mascota" type="text" placeholder="¿Cómo se llama?">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Servicio de interés *</label>
-            <select id="inp-servicio">
-              <option value="">Seleccionar servicio</option>
-              <option>Medicina General</option>
-              <option>Cirugía</option>
-              <option>Esquimiatría</option>
-              <option>Pediatría</option>
-              <option>Medicina Interna</option>
-              <option>Imágenes Diagnósticas</option>
-              <option>Oncología</option>
-              <option>Hospitalización</option>
-              <option>Alquiler de Quirófano</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Mensaje o descripción del caso</label>
-            <textarea id="inp-mensaje" placeholder="Cuéntanos brevemente sobre tu mascota y el motivo de consulta…"></textarea>
-          </div>
-
-          <button class="btn btn-orange" id="submitBtn" style="width:100%;" onclick="handleSubmit(this)">
-            <i class="fa-solid fa-paper-plane"></i>
-            Enviar solicitud
-          </button>
         </div>
 
       </div>
@@ -2466,6 +2433,11 @@
   </button>
 
   <!-- Multi-channel floating button -->
+  <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="btn-agenda-flotante">
+    <i class="fa-solid fa-calendar-check"></i>
+    <span>Agenda tu cita</span>
+  </a>
+
   <div class="multichannel" id="multichannel">
     <div class="mc-items hidden" id="mcItems">
 
@@ -2586,57 +2558,6 @@
     });
 
     // --- Form submit feedback ---
-    function handleSubmit(btn) {
-      const nombre   = document.getElementById('inp-nombre').value.trim();
-      const telefono = document.getElementById('inp-telefono').value.trim();
-      const tipo     = document.getElementById('inp-tipo').value;
-      const mascota  = document.getElementById('inp-mascota').value.trim();
-      const servicio = document.getElementById('inp-servicio').value;
-      const mensaje  = document.getElementById('inp-mensaje').value.trim();
-
-      if (!nombre || !telefono || !tipo || !servicio) {
-        btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Completa los campos obligatorios';
-        btn.style.background = '#e05252';
-        setTimeout(() => {
-          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
-          btn.style.background = '';
-        }, 3000);
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
-
-      emailjs.send('service_tf2v5jx', 'template_99kj6ot', {
-        nombre:        nombre,
-        telefono:      telefono,
-        mascota_tipo:  tipo,
-        mascota_nombre: mascota || 'No especificado',
-        servicio:      servicio,
-        mensaje:       mensaje || 'Sin mensaje adicional',
-      }, 'qcA5ME4JZw3psRRug').then(function() {
-        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Solicitud enviada!';
-        btn.style.background = 'var(--teal)';
-        ['inp-nombre','inp-telefono','inp-tipo','inp-mascota','inp-servicio','inp-mensaje'].forEach(function(id) {
-          const el = document.getElementById(id);
-          if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = '';
-        });
-        setTimeout(function() {
-          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
-          btn.style.background = '';
-          btn.disabled = false;
-        }, 4000);
-      }, function(error) {
-        console.error('[FORM] EmailJS error:', JSON.stringify(error));
-        btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error al enviar. Intenta de nuevo.';
-        btn.style.background = '#e05252';
-        btn.disabled = false;
-        setTimeout(function() {
-          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar solicitud';
-          btn.style.background = '';
-        }, 3500);
-      });
-    }
   </script>
 
   <!-- Blog post loader -->
