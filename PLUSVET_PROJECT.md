@@ -2,8 +2,8 @@
 
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
-> **Estado:** En producción — v2.0 activo en Vercel  
-> **Última actualización:** Junio 2026 (sesión 3 — CMS operativo, formulario de contacto activo)
+> **Estado:** En producción — v2.1 activo en Vercel  
+> **Última actualización:** Junio 2026 (sesión 3 — CMS, agenda online y flujo de citas automatizado)
 
 ---
 
@@ -225,7 +225,7 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 | Google Maps    | Embed iframe (sin API key)                                   |
 | marked.js      | Renderizado de Markdown en `post.html` (CDN jsDelivr)        |
 | Decap CMS      | v3.x — panel de administración en `/admin/`                  |
-| EmailJS        | v3 — envío de formulario de contacto sin backend propio      |
+| Calendly       | Plan gratuito — agenda online con confirmación automática    |
 | Sin frameworks | No React, no Vue, no dependencias de build                   |
 
 ---
@@ -251,7 +251,7 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 - [ ] Lista definitiva de especialistas en convenio
 - [x] Sistema de blog con CMS → Decap CMS activo y autenticación funcionando
 - [ ] Publicar primeros artículos en el blog
-- [x] Integrar formulario con backend → EmailJS activo (service_tf2v5jx / template_99kj6ot)
+- [x] Integrar sistema de agenda online → Calendly activo (`calendly.com/pplusvet`) con botón flotante permanente
 - [ ] SEO: meta tags Open Graph para redes sociales
 - [ ] Dominio personalizado (configurar en Vercel → Settings → Domains)
 - [ ] Migración de Vercel a hosting/dominio propio
@@ -405,6 +405,7 @@ Al inicio de cada conversación escribir:
 | v1.8    | Junio 2026 | Fix CMS auth: self-host decap-cms.js para evitar Tracking Prevention de Edge bloqueando localStorage |
 | v1.9    | Junio 2026 | Fix CMS auth: implementar protocolo de handshake Netlify en api/auth.js — CMS completamente funcional |
 | v2.0    | Junio 2026 | Formulario de contacto activo con EmailJS — validación, estados loading/éxito/error, envío a pplusvet@gmail.com |
+| v2.1    | Junio 2026 | Agenda online con Calendly — botón flotante permanente, card en sección contacto, todos los CTAs apuntan a Calendly; EmailJS removido |
 
 ---
 
@@ -434,16 +435,17 @@ Al inicio de cada conversación escribir:
 - **Secret nunca en repo:** `GITHUB_CLIENT_SECRET` va únicamente en Vercel → Environment Variables. El `GITHUB_CLIENT_ID` sí puede estar en `admin/config.yml`.
 - **vercel.json sin sección `builds`:** La auto-detección zero-config de Vercel es la que detecta los archivos en `/api/` como serverless functions. Agregar una sección `builds` explícita rompe el routing — no hacerlo.
 
-### Formulario de contacto — EmailJS
-- **Decisión:** EmailJS v3 como capa de envío (sin backend propio, sin Formspree).
-- **Cuenta:** `joinmediaco@gmail.com` en emailjs.com — plan gratuito (200 emails/mes).
-- **Credenciales activas:**
-  - Service ID: `service_tf2v5jx` (Gmail conectado a `pplusvet@gmail.com`)
-  - Template ID: `template_99kj6ot`
-  - Public Key: en `index.html` (safe — solo permite envíos, no acceso a la cuenta)
-- **Edge Tracking Prevention:** `emailjs.init()` guarda la key en localStorage, que Edge bloquea para scripts CDN. Solución: pasar la Public Key como 4º argumento de `emailjs.send()` directamente, sin usar `init()`.
-- **Campos del formulario:** nombre, teléfono, tipo de mascota, nombre de mascota, servicio, mensaje. Obligatorios: nombre, teléfono, tipo, servicio.
-- **Variables del template:** `{{nombre}}`, `{{telefono}}`, `{{mascota_tipo}}`, `{{mascota_nombre}}`, `{{servicio}}`, `{{mensaje}}`
+### Agenda online — Calendly
+- **Decisión:** Calendly (plan gratuito) como sistema de agenda, reemplaza el formulario de contacto y EmailJS.
+- **Razón:** flujo 100% automatizado — paciente elige fecha/hora, confirmación inmediata, sin intervención manual de la clínica.
+- **URL pública:** `https://calendly.com/pplusvet`
+- **Cuenta:** registrada con `pplusvet@gmail.com` (Google OAuth)
+- **Integración en el sitio:**
+  - Botón flotante naranja permanente "Agenda tu cita" — centrado en la parte inferior, visible en toda la página
+  - Sección Contacto → card con beneficios del sistema + botón "Ver horarios disponibles"
+  - Nav desktop, nav móvil, hero y sección Tecnología → todos apuntan a Calendly
+- **Pendiente (configurar en Calendly):** agregar preguntas personalizadas al evento: tipo de mascota, nombre de la mascota, servicio de interés, descripción del caso → llegan en el correo de confirmación a la clínica
+- **EmailJS:** removido del proyecto (SDK y función handleSubmit eliminados)
 
 ### Stacking cards — EXPLORADO Y DESCARTADO
 - `position: sticky; top: 0` + `animation-timeline: view()` es incompatible con secciones más altas que el viewport.
