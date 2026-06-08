@@ -6,6 +6,34 @@
   <title>Plus Vet — Panel de contenido</title>
 </head>
 <body>
+  <script>
+    // Ver si el mensaje OAuth llega
+    window.addEventListener('message', function(e) {
+      if (typeof e.data === 'string' && e.data.startsWith('authorization')) {
+        console.log('[AUTH] mensaje recibido — origin:', e.origin, '— data:', e.data.slice(0, 80));
+      }
+    });
+
+    // Ver si Decap hace fetch a GitHub y si responde bien
+    var _fetch = window.fetch;
+    window.fetch = function() {
+      var url = String(arguments[0]);
+      var isgit = url.includes('github.com') || url.includes('api.github');
+      if (isgit) console.log('[AUTH] fetch →', url.slice(0, 120));
+      return _fetch.apply(this, arguments).then(function(r) {
+        if (isgit) console.log('[AUTH] fetch ←', r.status, url.slice(0, 80));
+        return r;
+      }, function(err) {
+        if (isgit) console.log('[AUTH] fetch error:', err.message);
+        throw err;
+      });
+    };
+
+    // Capturar cualquier promesa rechazada
+    window.addEventListener('unhandledrejection', function(e) {
+      console.log('[AUTH] promise rechazada:', String(e.reason).slice(0, 200));
+    });
+  </script>
   <script src="/admin/decap-cms.js"></script>
 </body>
 </html>
