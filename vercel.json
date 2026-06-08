@@ -9,6 +9,10 @@
       "dest": "/admin/config.yml"
     },
     {
+      "src": "/admin/decap-cms.js",
+      "dest": "/admin/decap-cms.js"
+    },
+    {
       "src": "/admin(/)?",
       "dest": "/admin/index.html"
     },

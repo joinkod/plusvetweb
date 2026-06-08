@@ -6,54 +6,6 @@
   <title>Plus Vet — Panel de contenido</title>
 </head>
 <body>
-  <script>
-    // 1. Log what URL Decap opens for the popup
-    (function() {
-      var _open = window.open;
-      window.open = function(url) {
-        console.log('[AUTH] popup abierto:', typeof url === 'string' ? url.slice(0, 150) : '(no-string)');
-        return _open.apply(this, arguments);
-      };
-    })();
-
-    // 2. Wrap ALL window message listeners so we can see which ones fire
-    (function() {
-      var count = 0;
-      var _addEL = window.addEventListener.bind(window);
-      window.addEventListener = function(type, fn, opts) {
-        if (type === 'message') {
-          var id = '#' + (++count);
-          console.log('[AUTH] message listener registrado:', id);
-          return _addEL(type, function(e) {
-            if (typeof e.data === 'string' && e.data.includes('authorization')) {
-              var src = e.source === null ? 'null' : (e.source === window ? 'self' : 'popup');
-              console.log('[AUTH] listener', id, '— origin:', e.origin, '— source:', src, '— data:', e.data.slice(0, 60));
-            }
-            return fn.apply(this, arguments);
-          }, opts);
-        }
-        return _addEL(type, fn, opts);
-      };
-    })();
-
-    // 3. Shim: intercept the real message and re-dispatch as synthetic (source=null)
-    (function() {
-      window.addEventListener('message', function(e) {
-        if (e.source === null) return;
-        if (typeof e.data !== 'string' || !e.data.startsWith('authorization:github:success:')) return;
-        console.log('[AUTH] Shim: mensaje real recibido. Despachando sintético en 500ms...');
-        var data = e.data;
-        setTimeout(function() {
-          console.log('[AUTH] Shim: despachando sintético ahora');
-          window.dispatchEvent(new MessageEvent('message', {
-            data: data,
-            origin: window.location.origin,
-            source: null
-          }));
-        }, 500);
-      });
-    })();
-  </script>
-  <script src="https://unpkg.com/decap-cms@3.1.2/dist/decap-cms.js"></script>
+  <script src="/admin/decap-cms.js"></script>
 </body>
 </html>
