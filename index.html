@@ -2589,7 +2589,8 @@
           btn.style.background = '';
           btn.disabled = false;
         }, 4000);
-      }, function() {
+      }, function(error) {
+        console.error('[FORM] EmailJS error:', JSON.stringify(error));
         btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error al enviar. Intenta de nuevo.';
         btn.style.background = '#e05252';
         btn.disabled = false;
