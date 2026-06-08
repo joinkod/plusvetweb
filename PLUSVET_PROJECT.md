@@ -2,8 +2,8 @@
 
 > **Cliente:** Plus Vet Clínica Veterinaria  
 > **Agencia:** JOINKOD (Join Media Co. + KODIAK)  
-> **Estado:** En producción — v2.1 activo en Vercel  
-> **Última actualización:** Junio 2026 (sesión 3 — CMS, agenda online y flujo de citas automatizado)
+> **Estado:** En producción — v2.2 activo en Vercel  
+> **Última actualización:** Junio 2026 (sesión 3 — CMS, Calendly, SEO completo)
 
 ---
 
@@ -252,7 +252,8 @@ Reemplaza el antiguo botón de WhatsApp. Posición: esquina inferior derecha.
 - [x] Sistema de blog con CMS → Decap CMS activo y autenticación funcionando
 - [ ] Publicar primeros artículos en el blog
 - [x] Integrar sistema de agenda online → Calendly activo (`calendly.com/pplusvet`) con botón flotante permanente
-- [ ] SEO: meta tags Open Graph para redes sociales
+- [x] SEO: Open Graph, Twitter Card, JSON-LD schema, geo tags — activo
+- [ ] SEO: reemplazar `og:image` placeholder por foto real de la clínica (1200×630px → `assets/og-image.jpg`)
 - [ ] Dominio personalizado (configurar en Vercel → Settings → Domains)
 - [ ] Migración de Vercel a hosting/dominio propio
 
@@ -406,6 +407,7 @@ Al inicio de cada conversación escribir:
 | v1.9    | Junio 2026 | Fix CMS auth: implementar protocolo de handshake Netlify en api/auth.js — CMS completamente funcional |
 | v2.0    | Junio 2026 | Formulario de contacto activo con EmailJS — validación, estados loading/éxito/error, envío a pplusvet@gmail.com |
 | v2.1    | Junio 2026 | Agenda online con Calendly — botón flotante permanente, card en sección contacto, todos los CTAs apuntan a Calendly; EmailJS removido |
+| v2.2    | Junio 2026 | SEO completo — Open Graph, Twitter Card, JSON-LD VeterinaryCare, geo tags, canonical, robots, keywords |
 
 ---
 
@@ -446,6 +448,15 @@ Al inicio de cada conversación escribir:
   - Nav desktop, nav móvil, hero y sección Tecnología → todos apuntan a Calendly
 - **Pendiente (configurar en Calendly):** agregar preguntas personalizadas al evento: tipo de mascota, nombre de la mascota, servicio de interés, descripción del caso → llegan en el correo de confirmación a la clínica
 - **EmailJS:** removido del proyecto (SDK y función handleSubmit eliminados)
+
+### SEO — Stack completo
+- **Open Graph:** `og:title`, `og:description`, `og:image` (1200×630), `og:url`, `og:locale`, `og:site_name` — para previews en WhatsApp, Facebook y LinkedIn.
+- **Twitter Card:** `summary_large_image` — misma imagen que OG.
+- **JSON-LD VeterinaryCare:** schema.org con nombre, dirección, teléfono, email, coordenadas, horario y redes sociales. Google lo usa para resultados enriquecidos en búsquedas locales.
+- **Geo tags:** `geo.region` (CO-RIS), `geo.position`, `ICBM` — refuerzan el posicionamiento local.
+- **Otros:** `canonical`, `robots: index follow`, `keywords`, `author`.
+- **og:image pendiente:** actualmente usa placeholder de Unsplash. Reemplazar por foto real de la clínica (`assets/og-image.jpg`, 1200×630px) cuando esté disponible. Actualizar las dos líneas marcadas con `TODO` en `index.html`.
+- **Canonical URL:** apunta a `https://plusvetweb.vercel.app` — actualizar cuando se conecte dominio propio.
 
 ### Stacking cards — EXPLORADO Y DESCARTADO
 - `position: sticky; top: 0` + `animation-timeline: view()` es incompatible con secciones más altas que el viewport.
