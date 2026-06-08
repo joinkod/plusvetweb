@@ -1037,6 +1037,32 @@
       position: relative;
       z-index: 1;
     }
+    .calendly-cta {
+      display: flex; align-items: center; gap: 16px;
+      background: linear-gradient(135deg, var(--teal), #1a9a9b);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      text-decoration: none;
+      color: white;
+      margin-bottom: 8px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .calendly-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,188,189,.35); }
+    .calendly-cta__icon { font-size: 28px; opacity: .9; flex-shrink: 0; }
+    .calendly-cta__title { font-size: 16px; font-weight: 700; }
+    .calendly-cta__sub { font-size: 12px; opacity: .8; margin-top: 2px; }
+    .calendly-cta__arrow { margin-left: auto; font-size: 16px; opacity: .7; flex-shrink: 0; }
+    .form-divider {
+      text-align: center; position: relative; margin: 24px 0 20px;
+    }
+    .form-divider::before {
+      content: ''; position: absolute; top: 50%; left: 0; right: 0;
+      height: 1px; background: rgba(255,255,255,.12);
+    }
+    .form-divider span {
+      position: relative; background: transparent;
+      padding: 0 14px; font-size: 12px; color: rgba(255,255,255,.45);
+    }
     .form-heading { font-size: 20px; font-weight: 700; color: white; margin-bottom: 28px; }
 
     .form-group { margin-bottom: 18px; }
@@ -1551,7 +1577,7 @@
               </button>
             </div>
           </div>
-          <a href="#contacto" class="btn btn-primary btn-sm">Agendar cita</a>
+          <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Agendar cita</a>
         </div>
 
         <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -1570,7 +1596,7 @@
     <a href="#galeria"    onclick="toggleMenu()">Galería</a>
     <a href="#comunidad"  onclick="toggleMenu()">Comunidad</a>
     <a href="#contacto"   onclick="toggleMenu()">Contacto</a>
-    <a href="#contacto" class="btn btn-primary" onclick="toggleMenu()">Agendar cita</a>
+    <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="btn btn-primary" onclick="toggleMenu()">Agendar cita</a>
   </nav>
 
 
@@ -1600,7 +1626,7 @@
             Clínica veterinaria especializada en perros y gatos. Atención médica de alto nivel, tecnología avanzada y amor por cada paciente.
           </p>
           <div class="hero-actions">
-            <a href="#contacto" class="btn btn-orange">
+            <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="btn btn-orange">
               <i class="fa-solid fa-calendar-check"></i>
               Agendar cita
             </a>
@@ -1920,7 +1946,7 @@
             <div class="quirofano-item"><i class="fa-solid fa-circle-check"></i> Disponible para cirujanos externos previa reserva</div>
             <div class="quirofano-item"><i class="fa-solid fa-circle-check"></i> Protocolos rigurosos de bioseguridad y asepsia</div>
           </div>
-          <a href="#contacto" class="btn btn-orange">
+          <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="btn btn-orange">
             Solicitar información <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
@@ -2256,7 +2282,19 @@
 
         <!-- Form -->
         <div class="contact-form fade-up">
-          <div class="form-heading">Solicitar una cita</div>
+          <!-- Calendly CTA -->
+          <a href="https://calendly.com/pplusvet" target="_blank" rel="noopener" class="calendly-cta">
+            <div class="calendly-cta__icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div>
+              <div class="calendly-cta__title">Agenda tu cita en línea</div>
+              <div class="calendly-cta__sub">Elige fecha y hora disponible — confirmación inmediata</div>
+            </div>
+            <i class="fa-solid fa-arrow-right calendly-cta__arrow"></i>
+          </a>
+
+          <div class="form-divider"><span>o envíanos un mensaje</span></div>
+
+          <div class="form-heading">Consultas generales</div>
 
           <div class="form-row">
             <div class="form-group">
