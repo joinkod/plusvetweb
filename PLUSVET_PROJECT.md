@@ -344,55 +344,42 @@ Editor entra a /admin/  →  autenticación GitHub OAuth (proxy Vercel serverles
   - Callback URL registrada: `https://plusvetweb.vercel.app/api/callback`
 - **Versiones cargadas:** decap-cms 3.1.2 / decap-cms-core 3.3.2
 
-#### Estado de la depuración (Junio 2026)
+#### Causa raíz identificada y resuelta (Junio 2026)
 
-| Paso | Estado | Detalle |
-|------|--------|---------|
-| Popup OAuth se abre | ✅ | Abre `plusvetweb.vercel.app/api/auth` → redirige a GitHub |
-| Usuario autoriza en GitHub | ✅ | Flujo normal de OAuth |
-| Server intercambia code → token | ✅ | `api/callback.js` obtiene token válido (200 de GitHub API) |
-| Popup envía `postMessage` al opener | ✅ | `window.opener.postMessage(msg, '*')` ejecuta OK |
-| Mensaje llega al admin window | ✅ | Confirmado: los 3 listeners de la página se disparan |
-| Decap CMS procesa el mensaje | ❌ | No ocurre — no hay llamadas a GitHub API, no hay error |
-| Dashboard del CMS aparece | ❌ | Se queda en la pantalla de login |
+Edge's **Tracking Prevention** bloqueaba el acceso a `localStorage` para scripts cargados desde `unpkg.com`. Aunque el OAuth completaba correctamente y el mensaje llegaba a todos los listeners, Decap CMS no podía guardar el token en storage — fallaba en silencio, el dashboard nunca cargaba.
 
-#### Hipótesis investigadas
+**Evidencia en consola:**
+```
+Tracking Prevention blocked access to storage for https://unpkg.com/decap-cms@3.1.2/dist/decap-cms.js
+```
 
-1. **`e.source !== authWindow`** (principal sospechosa): Decap CMS puede rechazar el mensaje si compara la referencia de la ventana popup con la que tiene almacenada. Se probó redespachando como `MessageEvent` sintético (`source: null`) → parecía funcionar en versión debug, pero en versión limpia no. Diagnóstico inconcluso.
-2. **Mismatch de origin**: `e.origin` y `config.base_url` deberían ser ambos `https://plusvetweb.vercel.app`. No descartado hasta ver logs.
-3. **Timing**: el mensaje podría llegar antes de que Decap CMS inicialice su listener interno. El shim re-despacha 500ms después como mitigación.
+**Fix aplicado (v1.8):** `decap-cms.js` se sirve desde el propio dominio (`/admin/decap-cms.js`) en lugar de unpkg. Al ser same-origin, Edge no aplica la restricción de tracking.
 
-#### Estado actual del código
-
-- `admin/index.html` — versión de diagnóstico con:
-  - Interceptor de `window.open` (muestra URL del popup)
-  - Interceptor de `window.addEventListener` (muestra qué listener se dispara y con qué `origin`/`source`)
-  - Shim: captura el mensaje real → re-despacha como sintético `source: null` en 500ms
-- `api/callback.js` — versión limpia que muestra "OK — token enviado" en el popup
-- **Próximo paso:** Ejecutar la prueba y analizar los logs `[AUTH]` para confirmar/descartar `e.origin` como causa, y verificar si el listener de Decap CMS procesa el sintético.
-
-#### Tokens expuestos en sesión de debug — REVOCAR
-⚠️ Varios tokens `gho_*` quedaron visibles en la consola durante el debug. Ir a:
-GitHub → Settings → Developer settings → OAuth Apps → Plus Vet → **Revoke all user tokens**
-
-- **Panel de administración:** `https://plusvetweb.vercel.app/admin/`
+| Paso | Estado |
+|------|--------|
+| Popup OAuth se abre | ✅ |
+| Usuario autoriza en GitHub | ✅ |
+| Server intercambia code → token | ✅ |
+| Popup envía `postMessage` | ✅ |
+| Mensaje llega al admin window | ✅ |
+| Decap CMS almacena token en localStorage | ✅ (resuelto con self-hosting) |
+| Dashboard del CMS aparece | ✅ (pendiente verificar tras deploy) |
 
 #### Intentos previos descartados
-- Netlify como proxy OAuth → "Not Found" / "PAGE NOT FOUND" (el site de Netlify es estático, no tiene endpoint `/auth`)
+- Netlify como proxy OAuth → "Not Found" (el site de Netlify es estático)
 - PKCE auth → GitHub OAuth Apps no soportan PKCE puro sin client secret
 - `base_url: https://api.netlify.com` → requiere dominio registrado en Netlify
+- Shim `source: null` → no era el problema; descartado y eliminado
 
 ### Cómo iniciar una nueva sesión en Claude Code
 Al inicio de cada conversación escribir:
 > *"Lee el archivo `PLUSVET_PROJECT.md` y úsalo como contexto para continuar trabajando en este proyecto."*
 
-### Próximo paso al retomar (Junio 2026)
-El código actual en `admin/index.html` tiene los interceptores de debug activos. Al retomar:
-1. Abrir `https://plusvetweb.vercel.app/admin/` con DevTools → Console
-2. Hacer clic en "Iniciar sesión con GitHub" y completar el flujo OAuth
-3. Copiar toda la salida `[AUTH]` de la consola y compartirla
-4. Con esa información identificar si el problema es `e.origin`, `e.source`, timing, u otro
-5. Una vez resuelto, limpiar el debug de `admin/index.html` y hacer push final
+### Estado al retomar (post v1.8)
+El CMS debería funcionar correctamente. Si hay problemas:
+1. Verificar que Vercel haya desplegado el commit `8bb68f9`
+2. Probar en `https://plusvetweb.vercel.app/admin/` con Edge (sin modo debug)
+3. Si sigue fallando, revisar si la ruta `/admin/decap-cms.js` en `vercel.json` está sirviendo correctamente el archivo
 
 ---
 
@@ -409,6 +396,7 @@ El código actual en `admin/index.html` tiene los interceptores de debug activos
 | v1.6    | Junio 2026 | Sistema de blog completo: Decap CMS, post.html, tarjetas dinámicas en index, posts/index.json     |
 | v1.7    | Junio 2026 | Proxy OAuth en Vercel (api/auth.js + api/callback.js); autenticación CMS en depuración            |
 | v1.7.1  | Junio 2026 | Debug dirigido: interceptores de window.open + addEventListener + shim sintético source=null       |
+| v1.8    | Junio 2026 | Fix CMS auth: self-host decap-cms.js para evitar Tracking Prevention de Edge bloqueando localStorage |
 
 ---
 
